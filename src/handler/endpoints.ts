@@ -3,7 +3,16 @@ import { BASE_PATH, REST_METHOD } from "../constant";
 export const ENDPOINTS = {
   AUTH: {},
   USER: {},
-  TAG: {},
+  TAG: {
+    GET_TAG: {
+      path: BASE_PATH.TAG,
+      method: REST_METHOD.GET,
+    },
+    GET_TAG_LIST: {
+      path: BASE_PATH.TAG + "/list",
+      method: REST_METHOD.GET,
+    },
+  },
   CITY: {
     GET_CITY: {
       path: BASE_PATH.CITY,
