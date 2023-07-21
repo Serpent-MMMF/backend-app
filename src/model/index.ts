@@ -6,8 +6,10 @@ import {
   Tag,
   User,
   UserTag,
+  OneOnOne,
+  Discussion,
 } from "@prisma/client";
-import { AllOptional, Optional, Prettify } from "../util/types";
+import type { Prettify, Optional, AllOptional } from "../util";
 
 export type UserModel = Prettify<User>;
 export type CityModel = Prettify<City>;
@@ -16,6 +18,8 @@ export type TagModel = Prettify<Tag>;
 export type UserTagModel = Prettify<UserTag>;
 export type GroupSessionModel = Prettify<GroupSession>;
 export type BookGroupSessionModel = Prettify<BookGroupSession>;
+export type OneOnOneModel = Prettify<OneOnOne>;
+export type DiscussionModel = Prettify<Discussion>;
 
 export type Model =
   | ProvinceModel
@@ -24,7 +28,9 @@ export type Model =
   | TagModel
   | UserTagModel
   | GroupSessionModel
-  | BookGroupSessionModel;
+  | BookGroupSessionModel
+  | OneOnOneModel
+  | DiscussionModel;
 
 /* id, createdAt, and updatedAt are optional */
 export type OptionalFields = "id" | "createdAt" | "updatedAt";
@@ -41,6 +47,8 @@ export type OptionalUserTagModel = OptionalGenerated<UserTagModel>;
 export type OptionalGroupSessionModel = OptionalGenerated<GroupSessionModel>;
 export type OptionalBookGroupSessionModel =
   OptionalGenerated<BookGroupSessionModel>;
+export type OptionalOneOnOneModel = OptionalGenerated<OneOnOneModel>;
+export type OptionalDiscussionModel = OptionalGenerated<DiscussionModel>;
 
 /* Only createdAt, and updatedAt are optional */
 export type OptionalNonIdField = "createdAt" | "updatedAt";
@@ -57,6 +65,9 @@ export type OptionalNonIdGroupSessionModel =
   OptionalNonIdGenerated<GroupSessionModel>;
 export type OptionalNonIdBookGroupSessionModel =
   OptionalNonIdGenerated<BookGroupSessionModel>;
+export type OptionalNonIdOneOnOneModel = OptionalNonIdGenerated<OneOnOneModel>;
+export type OptionalNonIdDiscussionModel =
+  OptionalNonIdGenerated<DiscussionModel>;
 
 /* All are optional except id (mandatory) */
 export type OptionalExceptIdGenerated<T extends Model> = Prettify<
@@ -76,3 +87,7 @@ export type OptionalExceptIdGroupSessionModel =
   OptionalExceptIdGenerated<GroupSessionModel>;
 export type OptionalExceptIdBookGroupSessionModel =
   OptionalExceptIdGenerated<BookGroupSessionModel>;
+export type OptionalExceptIdOneOnOneModel =
+  OptionalExceptIdGenerated<OneOnOneModel>;
+export type OptionalExceptIdDiscussionModel =
+  OptionalExceptIdGenerated<DiscussionModel>;

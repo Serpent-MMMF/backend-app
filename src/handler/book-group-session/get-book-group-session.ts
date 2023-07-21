@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { buildErr } from "../../contract/base";
 import { ENDPOINTS } from "../endpoints";
 import { IHandler } from "../types";
+import { authMiddleware } from "../../middleware";
 
 export const getBookGroupSession = async (req: Request, res: Response) => {
   try {
@@ -16,7 +17,7 @@ export const getBookGroupSessionHandler: IHandler = {
   path: ENDPOINTS.BOOK_GROUP_SESSION.GET_BOOK_GROUP_SESSION.path,
   method: ENDPOINTS.BOOK_GROUP_SESSION.GET_BOOK_GROUP_SESSION.method,
   handler: getBookGroupSession,
-  middlewares: [],
+  middlewares: [authMiddleware],
   request: {
     body: {
       content: {},
