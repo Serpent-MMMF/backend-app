@@ -1,6 +1,12 @@
 import { Role, SubscriptionStatus } from "@prisma/client";
 import { IUserRepo, userRepo } from "../repo/user";
 import { UserModel } from "../model";
+import { HttpError } from "../error";
+import { ILoginData, IReqLogin, IUserDTO } from "../contract";
+import { HttpStatusCode } from "../constant";
+import jwt from "jsonwebtoken";
+import { CONFIG, ITokenContent } from "../internal";
+import { verifyHash } from "../util/hash";
 
 export type IRegisterParams = {
   description: string;
@@ -18,8 +24,8 @@ export type ILoginParams = {
 };
 
 export type IAuthUsecase = {
-  register(params: IRegisterParams): Promise<UserModel>;
-  login(params: ILoginParams): Promise<UserModel | null>;
+  login: (params: IReqLogin) => Promise<ILoginData>;
+  register: (params: IRegisterParams) => Promise<IUserDTO>;
 };
 
 export class AuthUsecase implements IAuthUsecase {
@@ -39,13 +45,40 @@ export class AuthUsecase implements IAuthUsecase {
     });
   }
 
-  login(params: ILoginParams) {
-    const { email, password } = params;
-
-    return this.userRepo.findOne({
+  async login({ email, password }: ILoginParams) {
+    const user = await this.userRepo.findOne({
       email,
-      password,
     });
+
+    if (!user) {
+      throw new HttpError(
+        HttpStatusCode.BadRequest,
+        new Error("User not found")
+      );
+    }
+
+    const isMatch = await verifyHash(password, user.password);
+
+    if (!isMatch) {
+      throw new HttpError(
+        HttpStatusCode.BadRequest,
+        new Error("Invalid credentials")
+      );
+    }
+
+    const tokenContent: ITokenContent = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    };
+    const token = jwt.sign(tokenContent, CONFIG.JWT_SECRET);
+
+    const { password: p, ...userDTO } = user;
+
+    return {
+      token,
+      user: userDTO,
+    };
   }
 }
 

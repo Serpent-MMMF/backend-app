@@ -1,5 +1,6 @@
 import { Role, SubscriptionStatus } from "@prisma/client";
 import { zoa } from "../util";
+import { z } from "zod";
 
 export const UserDTO = zoa.object({
   name: zoa.string().openapi({
@@ -33,3 +34,4 @@ export const UserDTO = zoa.object({
       example: SubscriptionStatus.FREE,
     }),
 });
+export type IUserDTO = z.infer<typeof UserDTO>;
