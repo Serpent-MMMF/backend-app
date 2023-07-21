@@ -4,8 +4,8 @@ export class HttpError {
   public readonly error: Error;
   public readonly status: HttpStatusCodeValue;
 
-  constructor(params: { error: Error; status: HttpStatusCodeValue }) {
-    this.error = params.error;
-    this.status = params.status;
+  constructor(status: HttpStatusCodeValue, error: Error) {
+    this.error = error;
+    this.status = status;
   }
 }

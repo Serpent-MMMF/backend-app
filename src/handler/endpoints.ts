@@ -1,7 +1,16 @@
 import { BASE_PATH, REST_METHOD } from "../constant";
 
 export const ENDPOINTS = {
-  AUTH: {},
+  AUTH: {
+    LOGIN: {
+      path: BASE_PATH.USER + "/login",
+      method: REST_METHOD.POST,
+    },
+    REGISTER: {
+      path: BASE_PATH.USER + "/register",
+      method: REST_METHOD.POST,
+    },
+  },
   CITY: {},
   PROVINCE: {},
   USER: {},
