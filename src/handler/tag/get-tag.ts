@@ -1,12 +1,30 @@
 import { Request, Response } from "express";
-import { buildErr } from "../../contract/base";
-import { ENDPOINTS } from "../endpoints";
+import {
+  IQueryGetTag,
+  IRespGetTag,
+  QueryGetTag,
+  RespGetTag,
+  buildErr,
+} from "../../contract";
 import { IHandler } from "../types";
+import { ENDPOINTS } from "../endpoints";
+import { zoa } from "../../util";
+import { tagUsecase } from "../../usecase";
+import { HttpStatusCode } from "../../constant";
 
 export const getTag = async (req: Request, res: Response) => {
   try {
-    res.send("Not implemented");
+    const query: IQueryGetTag = req.query;
+    const tags = await tagUsecase.findUserTags(query);
+
+    const response: IRespGetTag = {
+      success: true,
+      message: "Get tag success",
+      data: tags,
+    };
+    return res.status(HttpStatusCode.OK.code).json(response);
   } catch (err) {
+    console.error(err);
     const { response, status } = buildErr(err);
     return res.status(status.code).json(response);
   }
@@ -18,16 +36,16 @@ export const getTagHandler: IHandler = {
   handler: getTag,
   middlewares: [],
   request: {
-    body: {
-      content: {},
-      required: true,
-      description: "Create group-session request body",
-    },
+    query: QueryGetTag,
   },
   responses: {
     200: {
-      description: "Create group-session success response",
-      content: {},
+      description: "get tag success response",
+      content: {
+        "application/json": {
+          schema: RespGetTag,
+        },
+      },
     },
   },
 };
