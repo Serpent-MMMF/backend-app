@@ -79,6 +79,12 @@ export class GroupSessionRepo implements IGroupSessionRepo {
   }
 }
 
-export type IGroupSessionRepo = Repo<GroupSessionModel> & GroupSessionRepo;
+export type IGroupSessionRepo = Repo<GroupSessionModel> & {
+  findManyFilterDate(
+    limitStartDateTime?: Date,
+    limitEndDateTime?: Date,
+    params?: AllOptional<GroupSessionModel>
+  ): Promise<GroupSessionModel[]>;
+};
 
 export const groupSessionRepo = new GroupSessionRepo(prisma);
