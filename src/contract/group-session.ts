@@ -69,7 +69,7 @@ export const RespCreateGroupSession = BaseResponse.merge(
       data: GroupSessionDTO.optional(),
     })
     .openapi({
-      description: "response create group session",
+      description: "create group session data",
     })
 ).openapi({ description: "create group session response" });
 export type IRespCreateGroupSession = z.infer<typeof RespCreateGroupSession>;
@@ -96,7 +96,7 @@ export const RespGetGroupSession = BaseResponse.merge(
       data: zoa.array(GroupSessionDTO).optional(),
     })
     .openapi({
-      description: "response get group session",
+      description: "get group session data",
     })
 ).openapi({ description: "get group session response" });
 export type IRespGetGroupSession = z.infer<typeof RespGetGroupSession>;
@@ -117,7 +117,7 @@ export const RespGetDetailGroupSession = BaseResponse.merge(
       data: GroupSessionDTO.optional(),
     })
     .openapi({
-      description: "response get detail group session",
+      description: "get detail group session data",
     })
 ).openapi({ description: "get detail group session response" });
 export type IRespGetDetailGroupSession = z.infer<
