@@ -2,10 +2,28 @@ import { BASE_PATH, REST_METHOD } from "../constant";
 
 export const ENDPOINTS = {
   AUTH: {},
-  CITY: {},
-  PROVINCE: {},
   USER: {},
   TAG: {},
+  CITY: {
+    GET_CITY: {
+      path: BASE_PATH.CITY,
+      method: REST_METHOD.GET,
+    },
+    GET_DETAIL_CITY: {
+      path: BASE_PATH.CITY + "/:id",
+      method: REST_METHOD.GET,
+    },
+  },
+  PROVINCE: {
+    GET_PROVINCE: {
+      path: BASE_PATH.PROVINCE,
+      method: REST_METHOD.GET,
+    },
+    GET_DETAIL_PROVINCE: {
+      path: BASE_PATH.PROVINCE + "/:id",
+      method: REST_METHOD.GET,
+    },
+  },
   BOOK_GROUP_SESSION: {
     CREATE_BOOK_GROUP_SESSION: {
       path: BASE_PATH.BOOK_GROUP_SESSION,
