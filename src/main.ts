@@ -12,6 +12,8 @@ import {
 } from "./handler";
 import { IHandler } from "./handler/types";
 import cors from "cors";
+import { generateDocs } from "./util/documentation";
+import swaggerUi from "swagger-ui-express";
 
 const app = express();
 const port = 9999;
@@ -46,6 +48,13 @@ const handlers = [
   ...tagHandlers,
 ];
 registerRoutes(app, handlers);
+
+const options = {
+  explorer: true,
+};
+
+const docs = generateDocs(handlers);
+app.use("/", swaggerUi.serve, swaggerUi.setup(docs, options));
 
 app.listen(port, () => {
   console.log(`[Server]: I am running at http://localhost:${port}`);
