@@ -1,4 +1,5 @@
 import { zoa } from "../util";
+import { BaseResponse } from "./base";
 import { UserDTO } from "./user";
 
 export const LoginData = zoa.object({
@@ -11,3 +12,16 @@ export const LoginData = zoa.object({
   }),
 });
 
+export const RespLogin = BaseResponse.merge(
+  zoa.object({
+    data: LoginData,
+  })
+);
+
+export const RegisterData = UserDTO;
+
+export const RespRegister = BaseResponse.merge(
+  zoa.object({
+    data: RegisterData,
+  })
+);
