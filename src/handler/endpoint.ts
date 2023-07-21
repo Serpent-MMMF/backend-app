@@ -1,6 +1,6 @@
 import { BASE_PATH, REST_METHOD } from "../constant";
 
-export const ENDPOINT = {
+export const ENDPOINTS = {
   AUTH: {},
   CITY: {},
   PROVINCE: {},
