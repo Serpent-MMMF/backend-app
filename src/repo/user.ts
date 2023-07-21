@@ -1,8 +1,12 @@
 import { PrismaClient } from "@prisma/client";
-import { OptionalExceptId, OptionalGenerated, UserModel } from "../model";
-import { Repo } from "./base";
-import { AllOptional } from "../util";
+import {
+  OptionalExceptIdGenerated,
+  OptionalGenerated,
+  UserModel,
+} from "../model";
 import { prisma } from "../service/db";
+import { AllOptional } from "../util";
+import { Repo } from "./base";
 
 export class UserRepo implements IUserRepo {
   private prisma: PrismaClient;
@@ -29,7 +33,7 @@ export class UserRepo implements IUserRepo {
     });
   }
 
-  update(data: OptionalExceptId<UserModel>) {
+  update(data: OptionalExceptIdGenerated<UserModel>) {
     return this.prisma.user.update({
       where: {
         id: data.id,
