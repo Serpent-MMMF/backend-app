@@ -1,11 +1,35 @@
 import { Request, Response } from "express";
 import { buildErr } from "../../contract/base";
+import {
+  IRespGetGroupSession,
+  QueryGetGroupSession,
+  RespGetGroupSession,
+} from "../../contract/group-session";
+import { groupSessionUseCase } from "../../usecase/group-session";
 import { ENDPOINTS } from "../endpoints";
 import { IHandler } from "../types";
 
 export const getGroupSession = async (req: Request, res: Response) => {
   try {
-    res.send("Not implemented");
+    const reqQuery = QueryGetGroupSession.safeParse(req.query);
+
+    if (!reqQuery.success) {
+      const response: IRespGetGroupSession = {
+        success: false,
+        message: "Invalid request query",
+        error: reqQuery.error.message,
+      };
+      return res.status(400).json(response);
+    }
+
+    const groupSessions = await groupSessionUseCase.query(reqQuery.data);
+
+    const response: IRespGetGroupSession = {
+      success: true,
+      message: "Get group session success",
+      data: groupSessions,
+    };
+    return res.status(200).json(response);
   } catch (err) {
     const { response, status } = buildErr(err);
     return res.status(status.code).json(response);
@@ -18,16 +42,16 @@ export const getGroupSessionHandler: IHandler = {
   handler: getGroupSession,
   middlewares: [],
   request: {
-    body: {
-      content: {},
-      required: true,
-      description: "Create group-session request body",
-    },
+    query: QueryGetGroupSession,
   },
   responses: {
     200: {
-      description: "Create group-session success response",
-      content: {},
+      description: "get group session success response",
+      content: {
+        "application/json": {
+          schema: RespGetGroupSession,
+        },
+      },
     },
   },
 };

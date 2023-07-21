@@ -59,8 +59,26 @@ export class GroupSessionRepo implements IGroupSessionRepo {
       update: data,
     });
   }
+
+  findManyFilterDate(
+    limitStartDateTime?: Date,
+    limitEndDateTime?: Date,
+    params?: AllOptional<GroupSessionModel>
+  ) {
+    return this.prisma.groupSession.findMany({
+      where: {
+        date: {
+          gte: limitStartDateTime
+            ? limitStartDateTime
+            : new Date("2023-01-01T00:00:00.000Z"),
+          lte: limitEndDateTime ? limitEndDateTime : new Date(),
+        },
+        ...params,
+      },
+    });
+  }
 }
 
-export type IGroupSessionRepo = Repo<GroupSessionModel>;
+export type IGroupSessionRepo = Repo<GroupSessionModel> & GroupSessionRepo;
 
 export const groupSessionRepo = new GroupSessionRepo(prisma);
