@@ -1,11 +1,27 @@
 import { Request, Response } from "express";
 import { buildErr } from "../../contract/base";
+import {
+  IQueryGetCity,
+  IRespGetCity,
+  QueryGetCity,
+  RespGetCity,
+} from "../../contract/city";
+import { cityUsecase } from "../../usecase/city";
 import { ENDPOINTS } from "../endpoints";
 import { IHandler } from "../types";
 
 export const getCity = async (req: Request, res: Response) => {
   try {
-    res.send("Not implemented");
+    const reqQuery: IQueryGetCity = QueryGetCity.parse(req.query);
+
+    const cities = await cityUsecase.findMany(reqQuery);
+
+    const response: IRespGetCity = {
+      success: true,
+      message: "Get cities success",
+      data: cities,
+    };
+    return res.status(200).json(response);
   } catch (err) {
     const { response, status } = buildErr(err);
     return res.status(status.code).json(response);
@@ -18,16 +34,16 @@ export const getCityHandler: IHandler = {
   handler: getCity,
   middlewares: [],
   request: {
-    body: {
-      content: {},
-      required: true,
-      description: "Create group-session request body",
-    },
+    query: QueryGetCity,
   },
   responses: {
     200: {
-      description: "Create group-session success response",
-      content: {},
+      description: "Get city success response",
+      content: {
+        "application/json": {
+          schema: RespGetCity,
+        },
+      },
     },
   },
 };
