@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
+import { HttpStatusCode } from "../../constant";
 import { IRespRegister, ReqRegister, RespRegister } from "../../contract";
-import { authUsecase } from "../../usecase";
 import { buildErr } from "../../contract/base";
-import { IHandler } from "../types";
+import { authUsecase } from "../../usecase";
 import { ENDPOINTS } from "../endpoints";
+import { IHandler } from "../types";
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -24,7 +25,7 @@ export const register = async (req: Request, res: Response) => {
       message: "Register success",
       data: result,
     };
-    return res.status(200).json(response);
+    return res.status(HttpStatusCode.OK.code).json(response);
   } catch (err) {
     console.error(err);
     const { response, status } = buildErr(err);

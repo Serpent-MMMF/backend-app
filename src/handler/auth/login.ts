@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
-import { RespLogin, IRespLogin, ReqLogin, buildErr } from "../../contract";
+import { HttpStatusCode } from "../../constant";
+import { buildErr, IRespLogin, ReqLogin, RespLogin } from "../../contract";
 import { authUsecase } from "../../usecase";
-import { IHandler } from "../types";
 import { ENDPOINTS } from "../endpoints";
+import { IHandler } from "../types";
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -23,7 +24,7 @@ export const login = async (req: Request, res: Response) => {
       message: "Login success",
       data: result,
     };
-    return res.status(200).json(response);
+    return res.status(HttpStatusCode.OK.code).json(response);
   } catch (err) {
     console.error(err);
     const { response, status } = buildErr(err);

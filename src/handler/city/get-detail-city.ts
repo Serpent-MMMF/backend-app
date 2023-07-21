@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { HttpStatusCode } from "../../constant";
 import { buildErr } from "../../contract";
 import {
   IRespGetDetailCity,
@@ -27,7 +28,7 @@ export const getDetailCity = async (req: Request, res: Response) => {
       message: "Get detail city success",
       data: city,
     };
-    return res.status(200).json(response);
+    return res.status(HttpStatusCode.OK.code).json(response);
   } catch (err) {
     console.error(err);
     const { response, status } = buildErr(err);

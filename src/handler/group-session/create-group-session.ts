@@ -1,14 +1,15 @@
 import { Request, Response } from "express";
+import { HttpStatusCode } from "../../constant";
 import { buildErr } from "../../contract/base";
 import {
   IRespCreateGroupSession,
   ReqCreateGroupSession,
   RespCreateGroupSession,
 } from "../../contract/group-session";
+import { authMiddleware, mentorCheckMiddleware } from "../../middleware";
 import { groupSessionUseCase } from "../../usecase/group-session";
 import { ENDPOINTS } from "../endpoints";
 import { IHandler } from "../types";
-import { authMiddleware, mentorCheckMiddleware } from "../../middleware";
 
 export const createGroupSession = async (req: Request, res: Response) => {
   try {
@@ -34,7 +35,7 @@ export const createGroupSession = async (req: Request, res: Response) => {
       message: "Create group session success",
       data: groupSession,
     };
-    return res.status(200).json(response);
+    return res.status(HttpStatusCode.OK.code).json(response);
   } catch (err) {
     const { response, status } = buildErr(err);
     return res.status(status.code).json(response);
@@ -45,10 +46,7 @@ export const createGroupSessionHandler: IHandler = {
   path: ENDPOINTS.GROUP_SESSION.CREATE_GROUP_SESSION.path,
   method: ENDPOINTS.GROUP_SESSION.CREATE_GROUP_SESSION.method,
   handler: createGroupSession,
-  middlewares: [
-    authMiddleware,
-    mentorCheckMiddleware,
-  ],
+  middlewares: [authMiddleware, mentorCheckMiddleware],
   request: {
     body: {
       content: {

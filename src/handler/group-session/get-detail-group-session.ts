@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { HttpStatusCode } from "../../constant";
 import { buildErr } from "../../contract/base";
 import {
   IParamsGetDetailGroupSession,
@@ -28,7 +29,7 @@ export const getDetailGroupSession = async (req: Request, res: Response) => {
       message: "Get detail group session success",
       data: groupSession,
     };
-    return res.status(200).json(response);
+    return res.status(HttpStatusCode.OK.code).json(response);
   } catch (err) {
     const { response, status } = buildErr(err);
     return res.status(status.code).json(response);

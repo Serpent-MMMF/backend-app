@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { HttpStatusCode } from "../../constant";
 import { buildErr } from "../../contract/base";
 import {
   IQueryGetCity,
@@ -21,7 +22,7 @@ export const getCity = async (req: Request, res: Response) => {
       message: "Get cities success",
       data: cities,
     };
-    return res.status(200).json(response);
+    return res.status(HttpStatusCode.OK.code).json(response);
   } catch (err) {
     const { response, status } = buildErr(err);
     return res.status(status.code).json(response);
