@@ -30,7 +30,7 @@ export const getTagListHandler: IHandler = {
   request: {},
   responses: {
     200: {
-      description: "get tag success response",
+      description: "Get tag success response",
       content: {
         "application/json": {
           schema: RespGetTagList,

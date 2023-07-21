@@ -1,16 +1,15 @@
 import { Request, Response } from "express";
+import { HttpStatusCode } from "../../constant";
 import {
+  buildErr,
   IQueryGetTag,
   IRespGetTag,
   QueryGetTag,
   RespGetTag,
-  buildErr,
 } from "../../contract";
-import { IHandler } from "../types";
-import { ENDPOINTS } from "../endpoints";
-import { zoa } from "../../util";
 import { tagUsecase } from "../../usecase";
-import { HttpStatusCode } from "../../constant";
+import { ENDPOINTS } from "../endpoints";
+import { IHandler } from "../types";
 
 export const getTag = async (req: Request, res: Response) => {
   try {
@@ -40,7 +39,7 @@ export const getTagHandler: IHandler = {
   },
   responses: {
     200: {
-      description: "get tag success response",
+      description: "Get tag success response",
       content: {
         "application/json": {
           schema: RespGetTag,

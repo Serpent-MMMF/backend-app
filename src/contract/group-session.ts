@@ -96,9 +96,9 @@ export const RespGetGroupSession = BaseResponse.merge(
       data: zoa.array(GroupSessionDTO).optional(),
     })
     .openapi({
-      description: "get group session data",
+      description: "Get group session data",
     })
-).openapi({ description: "get group session response" });
+).openapi({ description: "Get group session response" });
 export type IRespGetGroupSession = z.infer<typeof RespGetGroupSession>;
 
 export const ReqGetDetailGroupSession = zoa.object({
@@ -117,9 +117,9 @@ export const RespGetDetailGroupSession = BaseResponse.merge(
       data: GroupSessionDTO.optional(),
     })
     .openapi({
-      description: "get detail group session data",
+      description: "Get detail group session data",
     })
-).openapi({ description: "get detail group session response" });
+).openapi({ description: "Get detail group session response" });
 export type IRespGetDetailGroupSession = z.infer<
   typeof RespGetDetailGroupSession
 >;

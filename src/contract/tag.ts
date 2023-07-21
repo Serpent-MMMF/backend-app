@@ -69,8 +69,8 @@ export const RespGetTagList = BaseResponse.merge(
     .object({
       data: zoa.array(TagDTO).optional(),
     })
-    .openapi({ description: "get tag list response data" })
-).openapi({ description: "get tag list response" });
+    .openapi({ description: "Get tag list response data" })
+).openapi({ description: "Get tag list response" });
 export type IRespGetTagList = z.infer<typeof RespGetTagList>;
 
 export const RespGetTag = BaseResponse.merge(
@@ -78,6 +78,6 @@ export const RespGetTag = BaseResponse.merge(
     .object({
       data: zoa.array(UserTagDetailDTO).optional(),
     })
-    .openapi({ description: "get tag response data" })
-).openapi({ description: "get tag response" });
+    .openapi({ description: "Get tag response data" })
+).openapi({ description: "Get tag response" });
 export type IRespGetTag = z.infer<typeof RespGetTag>;

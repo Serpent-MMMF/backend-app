@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { buildErr } from "../../contract/base";
 import {
-  IReqGetDetailGroupSession,
+  IParamsGetDetailGroupSession,
   IRespCreateGroupSession,
-  ReqGetDetailGroupSession,
+  ParamsGetDetailGroupSession,
   RespGetDetailGroupSession,
 } from "../../contract/group-session";
 import { groupSessionUseCase } from "../../usecase/group-session";
@@ -12,7 +12,7 @@ import { IHandler } from "../types";
 
 export const getDetailGroupSession = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params as IReqGetDetailGroupSession;
+    const { id } = req.params as IParamsGetDetailGroupSession;
 
     const groupSession = await groupSessionUseCase.findById(id);
     if (!groupSession) {
@@ -41,11 +41,11 @@ export const getDetailGroupSessionHandler: IHandler = {
   handler: getDetailGroupSession,
   middlewares: [],
   request: {
-    params: ReqGetDetailGroupSession,
+    params: ParamsGetDetailGroupSession,
   },
   responses: {
     200: {
-      description: "get detail group session success response",
+      description: "Get detail group session success response",
       content: {
         "application/json": {
           schema: RespGetDetailGroupSession,

@@ -46,7 +46,7 @@ export const getGroupSessionHandler: IHandler = {
   },
   responses: {
     200: {
-      description: "get group session success response",
+      description: "Get group session success response",
       content: {
         "application/json": {
           schema: RespGetGroupSession,
