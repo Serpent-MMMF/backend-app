@@ -28,6 +28,15 @@ export const getDetailBookGroupSession = async (
       return res.status(HttpStatusCode.NotFound.code).json(response);
     }
 
+    const user = res.locals.tokenContent;
+    if (bookGroupSession.menteeId !== user.id) {
+      const response: IRespGetDetailBookGroupSession = {
+        success: false,
+        message: "You don't book this book group session",
+      };
+      return res.status(HttpStatusCode.Forbidden.code).json(response);
+    }
+
     const response: IRespGetDetailBookGroupSession = {
       success: true,
       message: "Get detail book group session success",
