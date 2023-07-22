@@ -279,9 +279,8 @@ const seedOneOnOne = async () => {
       .fill({})
       .map((_, idx) => {
         const mentor = mentors[idx];
-        const mentee = mentors[idx];
+        const mentee = mentees[idx];
 
-        // return
         return oneOnOneUsecase.create(
           {
             mentorId: mentor.id,
