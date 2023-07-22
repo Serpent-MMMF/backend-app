@@ -13,7 +13,7 @@ components:
   schemas: {}
   parameters: {}
 paths:
-  /user/login:
+  /auth/login:
     post:
       security:
         - bearerAuth: []
@@ -112,7 +112,7 @@ paths:
                 required:
                   - success
                   - message
-  /user/register:
+  /auth/register:
     post:
       security:
         - bearerAuth: []
@@ -1091,7 +1091,7 @@ paths:
         - bearerAuth: []
       requestBody:
         required: true
-        description: Update Profile request body
+        description: Update profile request body
         content:
           application/json:
             schema:
@@ -1130,7 +1130,7 @@ paths:
                 - tagIds
       responses:
         "200":
-          description: Update Profile success response
+          description: Update profile success response
           content:
             application/json:
               schema:
@@ -1195,7 +1195,7 @@ paths:
         - bearerAuth: []
       responses:
         "200":
-          description: Get Self Profile success response
+          description: Get self profile success response
           content:
             application/json:
               schema:
@@ -1262,14 +1262,14 @@ paths:
       parameters:
         - schema:
             type: string
-            description: User ID
+            description: user's id
             example: "1"
           required: true
           name: id
           in: path
       responses:
         "200":
-          description: Get Profile success response
+          description: Get profile success response
           content:
             application/json:
               schema:
@@ -1437,3 +1437,688 @@ paths:
                   - success
                   - message
                 description: Search user response
+  "/one-on-one/{id}/rating-review":
+    post:
+      security:
+        - bearerAuth: []
+      parameters:
+        - schema:
+            type: string
+            description: One on one ID
+            example: "1"
+          required: true
+          name: id
+          in: path
+      requestBody:
+        required: true
+        description: add review rating one on one request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                review:
+                  type: string
+                  description: review content
+                  example: this is review content
+                rating:
+                  type: number
+                  description: rating
+                  example: 4
+              required:
+                - review
+                - rating
+      responses:
+        "200":
+          description: add review rating one on one success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  error:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: User ID
+                        example: "1"
+                      createdAt:
+                        type: string
+                        nullable: true
+                        description: user's created at
+                        example: 2021-08-01T00:00:00.000Z
+                      updatedAt:
+                        type: string
+                        nullable: true
+                        description: user's updated at
+                        example: 2021-08-01T00:00:00.000Z
+                      menteeId:
+                        type: string
+                        description: mentee's id
+                        example: "1"
+                      mentorId:
+                        type: string
+                        description: mentor's id
+                        example: "1"
+                      meetingUrl:
+                        anyOf:
+                          - type: string
+                            description: meeting url
+                            example: https://meet.google.com/123
+                          - nullable: true
+                          - nullable: true
+                      review:
+                        anyOf:
+                          - type: string
+                            description: review content
+                            example: this is review content
+                          - nullable: true
+                          - nullable: true
+                      rating:
+                        anyOf:
+                          - type: number
+                            description: rating
+                            example: 4
+                          - nullable: true
+                          - nullable: true
+                      message:
+                        type: string
+                        description: message
+                        example: message request
+                      approvalStatus:
+                        type: string
+                        enum: &a3
+                          - APPROVED
+                          - PENDING
+                          - REJECTED
+                        description: approval status
+                        example: APPROVED
+                      date:
+                        type: string
+                        nullable: true
+                        description: user's updated at
+                        example: 2021-08-01T00:00:00.000Z
+                    required:
+                      - id
+                      - createdAt
+                      - updatedAt
+                      - menteeId
+                      - mentorId
+                      - meetingUrl
+                      - review
+                      - rating
+                      - message
+                      - approvalStatus
+                      - date
+                required:
+                  - success
+                  - message
+                description: update status one on one response
+  "/one-on-one/{id}/approve":
+    patch:
+      security:
+        - bearerAuth: []
+      parameters:
+        - schema:
+            type: string
+            description: one on one id
+            example: "1"
+          required: true
+          name: id
+          in: path
+      requestBody:
+        required: true
+        description: approve one on one request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                meetingUrl:
+                  type: string
+                  description: meeting url
+                  example: https://meet.google.com/123
+              required:
+                - meetingUrl
+      responses:
+        "200":
+          description: approve one on one success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  error:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: User ID
+                        example: "1"
+                      createdAt:
+                        type: string
+                        nullable: true
+                        description: user's created at
+                        example: 2021-08-01T00:00:00.000Z
+                      updatedAt:
+                        type: string
+                        nullable: true
+                        description: user's updated at
+                        example: 2021-08-01T00:00:00.000Z
+                      menteeId:
+                        type: string
+                        description: mentee's id
+                        example: "1"
+                      mentorId:
+                        type: string
+                        description: mentor's id
+                        example: "1"
+                      meetingUrl:
+                        anyOf:
+                          - type: string
+                            description: meeting url
+                            example: https://meet.google.com/123
+                          - nullable: true
+                          - nullable: true
+                      review:
+                        anyOf:
+                          - type: string
+                            description: review content
+                            example: this is review content
+                          - nullable: true
+                          - nullable: true
+                      rating:
+                        anyOf:
+                          - type: number
+                            description: rating
+                            example: 4
+                          - nullable: true
+                          - nullable: true
+                      message:
+                        type: string
+                        description: message
+                        example: message request
+                      approvalStatus:
+                        type: string
+                        enum: *a3
+                        description: approval status
+                        example: APPROVED
+                      date:
+                        type: string
+                        nullable: true
+                        description: user's updated at
+                        example: 2021-08-01T00:00:00.000Z
+                    required:
+                      - id
+                      - createdAt
+                      - updatedAt
+                      - menteeId
+                      - mentorId
+                      - meetingUrl
+                      - review
+                      - rating
+                      - message
+                      - approvalStatus
+                      - date
+                required:
+                  - success
+                  - message
+                description: update status one on one response
+  /one-on-one:
+    post:
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: create one on one request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mentorId:
+                  type: string
+                  description: mentor's id
+                  example: "1"
+                message:
+                  type: string
+                  description: message
+                  example: message request
+                date:
+                  type: string
+                  nullable: true
+                  description: user's updated at
+                  example: 2021-08-01T00:00:00.000Z
+              required:
+                - mentorId
+                - message
+                - date
+      responses:
+        "200":
+          description: Create one on one success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  error:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: User ID
+                        example: "1"
+                      createdAt:
+                        type: string
+                        nullable: true
+                        description: user's created at
+                        example: 2021-08-01T00:00:00.000Z
+                      updatedAt:
+                        type: string
+                        nullable: true
+                        description: user's updated at
+                        example: 2021-08-01T00:00:00.000Z
+                      menteeId:
+                        type: string
+                        description: mentee's id
+                        example: "1"
+                      mentorId:
+                        type: string
+                        description: mentor's id
+                        example: "1"
+                      meetingUrl:
+                        anyOf:
+                          - type: string
+                            description: meeting url
+                            example: https://meet.google.com/123
+                          - nullable: true
+                          - nullable: true
+                      review:
+                        anyOf:
+                          - type: string
+                            description: review content
+                            example: this is review content
+                          - nullable: true
+                          - nullable: true
+                      rating:
+                        anyOf:
+                          - type: number
+                            description: rating
+                            example: 4
+                          - nullable: true
+                          - nullable: true
+                      message:
+                        type: string
+                        description: message
+                        example: message request
+                      approvalStatus:
+                        type: string
+                        enum: *a3
+                        description: approval status
+                        example: APPROVED
+                      date:
+                        type: string
+                        nullable: true
+                        description: user's updated at
+                        example: 2021-08-01T00:00:00.000Z
+                    required:
+                      - id
+                      - createdAt
+                      - updatedAt
+                      - menteeId
+                      - mentorId
+                      - meetingUrl
+                      - review
+                      - rating
+                      - message
+                      - approvalStatus
+                      - date
+                required:
+                  - success
+                  - message
+                description: create one on one response
+    get:
+      security:
+        - bearerAuth: []
+      parameters:
+        - schema:
+            type: string
+            description: mentor's id
+            example: "1"
+          required: false
+          name: mentorId
+          in: query
+        - schema:
+            type: string
+            description: mentee's id
+            example: "1"
+          required: false
+          name: menteeId
+          in: query
+        - schema:
+            type: string
+            enum:
+              - APPROVED
+              - PENDING
+              - REJECTED
+            description: approval status
+            example: APPROVED
+          required: false
+          name: approvalStatus
+          in: query
+      responses:
+        "200":
+          description: get one on one success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  error:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: User ID
+                          example: "1"
+                        createdAt:
+                          type: string
+                          nullable: true
+                          description: user's created at
+                          example: 2021-08-01T00:00:00.000Z
+                        updatedAt:
+                          type: string
+                          nullable: true
+                          description: user's updated at
+                          example: 2021-08-01T00:00:00.000Z
+                        menteeId:
+                          type: string
+                          description: mentee's id
+                          example: "1"
+                        mentorId:
+                          type: string
+                          description: mentor's id
+                          example: "1"
+                        meetingUrl:
+                          anyOf:
+                            - type: string
+                              description: meeting url
+                              example: https://meet.google.com/123
+                            - nullable: true
+                            - nullable: true
+                        review:
+                          anyOf:
+                            - type: string
+                              description: review content
+                              example: this is review content
+                            - nullable: true
+                            - nullable: true
+                        rating:
+                          anyOf:
+                            - type: number
+                              description: rating
+                              example: 4
+                            - nullable: true
+                            - nullable: true
+                        message:
+                          type: string
+                          description: message
+                          example: message request
+                        approvalStatus:
+                          type: string
+                          enum: *a3
+                          description: approval status
+                          example: APPROVED
+                        date:
+                          type: string
+                          nullable: true
+                          description: user's updated at
+                          example: 2021-08-01T00:00:00.000Z
+                      required:
+                        - id
+                        - createdAt
+                        - updatedAt
+                        - menteeId
+                        - mentorId
+                        - meetingUrl
+                        - review
+                        - rating
+                        - message
+                        - approvalStatus
+                        - date
+                    description: get one on one response data
+                required:
+                  - success
+                  - message
+                description: get one on one response
+  "/one-on-one/{id}":
+    get:
+      security:
+        - bearerAuth: []
+      parameters:
+        - schema:
+            type: string
+            description: One on one ID
+            example: "1"
+          required: true
+          name: id
+          in: path
+      responses:
+        "200":
+          description: get detail one on one success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  error:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: User ID
+                        example: "1"
+                      createdAt:
+                        type: string
+                        nullable: true
+                        description: user's created at
+                        example: 2021-08-01T00:00:00.000Z
+                      updatedAt:
+                        type: string
+                        nullable: true
+                        description: user's updated at
+                        example: 2021-08-01T00:00:00.000Z
+                      menteeId:
+                        type: string
+                        description: mentee's id
+                        example: "1"
+                      mentorId:
+                        type: string
+                        description: mentor's id
+                        example: "1"
+                      meetingUrl:
+                        anyOf:
+                          - type: string
+                            description: meeting url
+                            example: https://meet.google.com/123
+                          - nullable: true
+                          - nullable: true
+                      review:
+                        anyOf:
+                          - type: string
+                            description: review content
+                            example: this is review content
+                          - nullable: true
+                          - nullable: true
+                      rating:
+                        anyOf:
+                          - type: number
+                            description: rating
+                            example: 4
+                          - nullable: true
+                          - nullable: true
+                      message:
+                        type: string
+                        description: message
+                        example: message request
+                      approvalStatus:
+                        type: string
+                        enum: *a3
+                        description: approval status
+                        example: APPROVED
+                      date:
+                        type: string
+                        nullable: true
+                        description: user's updated at
+                        example: 2021-08-01T00:00:00.000Z
+                    required:
+                      - id
+                      - createdAt
+                      - updatedAt
+                      - menteeId
+                      - mentorId
+                      - meetingUrl
+                      - review
+                      - rating
+                      - message
+                      - approvalStatus
+                      - date
+                required:
+                  - success
+                  - message
+                description: get detail one on one response
+  "/one-on-one/{id}/reject":
+    patch:
+      security:
+        - bearerAuth: []
+      parameters:
+        - schema:
+            type: string
+            description: one on one id
+            example: "1"
+          required: true
+          name: id
+          in: path
+      responses:
+        "200":
+          description: reject one on one success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  error:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: User ID
+                        example: "1"
+                      createdAt:
+                        type: string
+                        nullable: true
+                        description: user's created at
+                        example: 2021-08-01T00:00:00.000Z
+                      updatedAt:
+                        type: string
+                        nullable: true
+                        description: user's updated at
+                        example: 2021-08-01T00:00:00.000Z
+                      menteeId:
+                        type: string
+                        description: mentee's id
+                        example: "1"
+                      mentorId:
+                        type: string
+                        description: mentor's id
+                        example: "1"
+                      meetingUrl:
+                        anyOf:
+                          - type: string
+                            description: meeting url
+                            example: https://meet.google.com/123
+                          - nullable: true
+                          - nullable: true
+                      review:
+                        anyOf:
+                          - type: string
+                            description: review content
+                            example: this is review content
+                          - nullable: true
+                          - nullable: true
+                      rating:
+                        anyOf:
+                          - type: number
+                            description: rating
+                            example: 4
+                          - nullable: true
+                          - nullable: true
+                      message:
+                        type: string
+                        description: message
+                        example: message request
+                      approvalStatus:
+                        type: string
+                        enum: *a3
+                        description: approval status
+                        example: APPROVED
+                      date:
+                        type: string
+                        nullable: true
+                        description: user's updated at
+                        example: 2021-08-01T00:00:00.000Z
+                    required:
+                      - id
+                      - createdAt
+                      - updatedAt
+                      - menteeId
+                      - mentorId
+                      - meetingUrl
+                      - review
+                      - rating
+                      - message
+                      - approvalStatus
+                      - date
+                required:
+                  - success
+                  - message
+                description: update status one on one response

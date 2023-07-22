@@ -3,11 +3,11 @@ import { BASE_PATH, REST_METHOD } from "../constant";
 export const ENDPOINTS = {
   AUTH: {
     LOGIN: {
-      path: BASE_PATH.USER + "/login",
+      path: BASE_PATH.AUTH + "/login",
       method: REST_METHOD.POST,
     },
     REGISTER: {
-      path: BASE_PATH.USER + "/register",
+      path: BASE_PATH.AUTH + "/register",
       method: REST_METHOD.POST,
     },
   },
