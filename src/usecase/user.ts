@@ -68,12 +68,14 @@ export class UserUsecase implements IUserUsecase {
       throw new HttpError(HttpStatusCode.NotFound, new Error("City not found"));
     }
 
-    const users = await this.userRepository.findMany({
+    let users = await this.userRepository.findMany({
       role: params.role,
       subscriptionStatus: params.premiumOnly
         ? SubscriptionStatus.PREMIUM
         : undefined,
     });
+
+    users = users.filter((user) => user.id !== userId);
 
     const data = await Promise.all(
       users.map(async (user) => {
