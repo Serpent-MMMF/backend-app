@@ -7,6 +7,7 @@ import {
   bookGroupSessionHandlers,
   cityHandlers,
   groupSessionHandlers,
+  oneOnOneHandlers,
   provinceHandlers,
   tagHandlers,
 } from "./handler";
@@ -14,6 +15,7 @@ import { IHandler } from "./handler/types";
 import cors from "cors";
 import { generateDocs } from "./util/documentation";
 import swaggerUi from "swagger-ui-express";
+import { userHandlers } from "./handler/user";
 
 const app = express();
 const port = 9999;
@@ -46,6 +48,8 @@ const handlers = [
   ...groupSessionHandlers,
   ...provinceHandlers,
   ...tagHandlers,
+  ...userHandlers,
+  ...oneOnOneHandlers,
 ];
 registerRoutes(app, handlers);
 

@@ -7,3 +7,4 @@ export * from "./group-session";
 export * from "./province";
 export * from "./tag";
 export * from "./user";
+export * from "./one-on-one";

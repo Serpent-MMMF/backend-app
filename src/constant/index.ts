@@ -188,6 +188,7 @@ export const BASE_PATH = {
   BOOK_GROUP_SESSION: "/book-group-session",
   GROUP_SESSION: "/group-session",
   DISCUSSION: "/discussion",
+  ONE_ON_ONE: "/one-on-one",
 } as const;
 
 export type BASE_PATH_KEYS = keyof typeof BASE_PATH;

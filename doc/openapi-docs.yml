@@ -230,59 +230,321 @@ paths:
         - bearerAuth: []
       requestBody:
         required: true
-        description: Create group-session request body
-        content: {}
+        description: Create book group session request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sessionId:
+                  type: string
+                  description: session's id
+                  example: "1"
+              required:
+                - sessionId
       responses:
         "200":
-          description: Create group-session success response
-          content: {}
+          description: Create book group session success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  error:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: User ID
+                        example: "1"
+                      createdAt:
+                        type: string
+                        nullable: true
+                        description: user's created at
+                        example: 2021-08-01T00:00:00.000Z
+                      updatedAt:
+                        type: string
+                        nullable: true
+                        description: user's updated at
+                        example: 2021-08-01T00:00:00.000Z
+                      menteeId:
+                        type: string
+                        description: mentee's id
+                        example: "1"
+                      sessionId:
+                        type: string
+                        description: session's id
+                        example: "1"
+                    required:
+                      - id
+                      - createdAt
+                      - updatedAt
+                      - menteeId
+                      - sessionId
+                required:
+                  - success
+                  - message
+                description: Create book group session response
     get:
       security:
         - bearerAuth: []
-      requestBody:
-        required: true
-        description: Create group-session request body
-        content: {}
+      parameters:
+        - schema:
+            type: string
+            description: session's id
+            example: "1"
+          required: false
+          name: sessionId
+          in: query
+        - schema:
+            type: string
+            description: mentee's id
+            example: "1"
+          required: false
+          name: menteeId
+          in: query
       responses:
         "200":
-          description: Create group-session success response
-          content: {}
+          description: Get book group session success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  error:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: User ID
+                          example: "1"
+                        createdAt:
+                          type: string
+                          nullable: true
+                          description: user's created at
+                          example: 2021-08-01T00:00:00.000Z
+                        updatedAt:
+                          type: string
+                          nullable: true
+                          description: user's updated at
+                          example: 2021-08-01T00:00:00.000Z
+                        menteeId:
+                          type: string
+                          description: mentee's id
+                          example: "1"
+                        sessionId:
+                          type: string
+                          description: session's id
+                          example: "1"
+                      required:
+                        - id
+                        - createdAt
+                        - updatedAt
+                        - menteeId
+                        - sessionId
+                required:
+                  - success
+                  - message
+                description: Get book group session response
   "/book-group-session/{id}":
     get:
       security:
         - bearerAuth: []
-      requestBody:
-        required: true
-        description: Create group-session request body
-        content: {}
+      parameters:
+        - schema:
+            type: string
+            description: book group session ID
+            example: "1"
+          required: true
+          name: id
+          in: path
       responses:
         "200":
-          description: Create group-session success response
-          content: {}
+          description: Get detail book group session success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  error:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: User ID
+                        example: "1"
+                      createdAt:
+                        type: string
+                        nullable: true
+                        description: user's created at
+                        example: 2021-08-01T00:00:00.000Z
+                      updatedAt:
+                        type: string
+                        nullable: true
+                        description: user's updated at
+                        example: 2021-08-01T00:00:00.000Z
+                      menteeId:
+                        type: string
+                        description: mentee's id
+                        example: "1"
+                      sessionId:
+                        type: string
+                        description: session's id
+                        example: "1"
+                    required:
+                      - id
+                      - createdAt
+                      - updatedAt
+                      - menteeId
+                      - sessionId
+                required:
+                  - success
+                  - message
+                description: Get detail book group session response
   /city:
     get:
       security:
         - bearerAuth: []
-      requestBody:
-        required: true
-        description: Create group-session request body
-        content: {}
+      parameters:
+        - schema:
+            type: string
+            description: province's id
+            example: "1"
+          required: false
+          name: provinceId
+          in: query
       responses:
         "200":
-          description: Create group-session success response
-          content: {}
+          description: Get city success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  error:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: User ID
+                          example: "1"
+                        createdAt:
+                          type: string
+                          nullable: true
+                          description: user's created at
+                          example: 2021-08-01T00:00:00.000Z
+                        updatedAt:
+                          type: string
+                          nullable: true
+                          description: user's updated at
+                          example: 2021-08-01T00:00:00.000Z
+                        name:
+                          type: string
+                          description: city's name
+                          example: Jakarta
+                        provinceId:
+                          type: string
+                          description: province's id
+                          example: "1"
+                      required:
+                        - id
+                        - createdAt
+                        - updatedAt
+                        - name
+                        - provinceId
+                required:
+                  - success
+                  - message
+                description: Get city response
   "/city/{id}":
     get:
       security:
         - bearerAuth: []
-      requestBody:
-        required: true
-        description: Create group-session request body
-        content: {}
+      parameters:
+        - schema:
+            type: string
+            description: city id
+            example: "1"
+          required: true
+          name: id
+          in: path
       responses:
         "200":
-          description: Create group-session success response
-          content: {}
+          description: Get detail city success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  error:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: User ID
+                        example: "1"
+                      createdAt:
+                        type: string
+                        nullable: true
+                        description: user's created at
+                        example: 2021-08-01T00:00:00.000Z
+                      updatedAt:
+                        type: string
+                        nullable: true
+                        description: user's updated at
+                        example: 2021-08-01T00:00:00.000Z
+                      name:
+                        type: string
+                        description: city's name
+                        example: Jakarta
+                      provinceId:
+                        type: string
+                        description: province's id
+                        example: "1"
+                    required:
+                      - id
+                      - createdAt
+                      - updatedAt
+                      - name
+                      - provinceId
+                required:
+                  - success
+                  - message
+                description: Get detail city response
   /group-session:
     post:
       security:
@@ -421,7 +683,7 @@ paths:
           in: query
       responses:
         "200":
-          description: get group session success response
+          description: Get group session success response
           content:
             application/json:
               schema:
@@ -490,7 +752,7 @@ paths:
                 required:
                   - success
                   - message
-                description: get group session response
+                description: Get group session response
   "/group-session/{id}":
     get:
       security:
@@ -505,7 +767,7 @@ paths:
           in: path
       responses:
         "200":
-          description: get detail group session success response
+          description: Get detail group session success response
           content:
             application/json:
               schema:
@@ -572,31 +834,113 @@ paths:
                 required:
                   - success
                   - message
-                description: get detail group session response
+                description: Get detail group session response
   /province:
     get:
       security:
         - bearerAuth: []
-      requestBody:
-        required: true
-        description: Create group-session request body
-        content: {}
       responses:
         "200":
-          description: Create group-session success response
-          content: {}
+          description: Get province success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  error:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: User ID
+                          example: "1"
+                        createdAt:
+                          type: string
+                          nullable: true
+                          description: user's created at
+                          example: 2021-08-01T00:00:00.000Z
+                        updatedAt:
+                          type: string
+                          nullable: true
+                          description: user's updated at
+                          example: 2021-08-01T00:00:00.000Z
+                        name:
+                          type: string
+                          description: province name
+                          example: DKI Jakarta
+                      required:
+                        - id
+                        - createdAt
+                        - updatedAt
+                        - name
+                required:
+                  - success
+                  - message
+                description: get province response
   "/province/{id}":
     get:
       security:
         - bearerAuth: []
-      requestBody:
-        required: true
-        description: Create group-session request body
-        content: {}
+      parameters:
+        - schema:
+            type: string
+            description: province id
+            example: "1"
+          required: true
+          name: id
+          in: path
       responses:
         "200":
-          description: Create group-session success response
-          content: {}
+          description: Get detail province success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  error:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: User ID
+                        example: "1"
+                      createdAt:
+                        type: string
+                        nullable: true
+                        description: user's created at
+                        example: 2021-08-01T00:00:00.000Z
+                      updatedAt:
+                        type: string
+                        nullable: true
+                        description: user's updated at
+                        example: 2021-08-01T00:00:00.000Z
+                      name:
+                        type: string
+                        description: province name
+                        example: DKI Jakarta
+                    required:
+                      - id
+                      - createdAt
+                      - updatedAt
+                      - name
+                required:
+                  - success
+                  - message
+                description: get detail province response
   /tag:
     get:
       security:
@@ -611,7 +955,7 @@ paths:
           in: query
       responses:
         "200":
-          description: get tag success response
+          description: Get tag success response
           content:
             application/json:
               schema:
@@ -690,14 +1034,14 @@ paths:
                 required:
                   - success
                   - message
-                description: get tag response
+                description: Get tag response
   /tag/list:
     get:
       security:
         - bearerAuth: []
       responses:
         "200":
-          description: get tag success response
+          description: Get tag success response
           content:
             application/json:
               schema:
@@ -740,4 +1084,356 @@ paths:
                 required:
                   - success
                   - message
-                description: get tag list response
+                description: Get tag list response
+  /user/self:
+    put:
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Update Profile request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: user's name
+                  example: John Doe
+                description:
+                  type: string
+                  description: user's description
+                  example: I am a mentor
+                subscriptionStatus:
+                  type: string
+                  description: user's subscription status
+                  example: FREE
+                imageUrl:
+                  type: string
+                  description: user's image url
+                  example: https://i.imgur.com/123.jpg
+                cityId:
+                  type: string
+                  description: user's city id
+                  example: "1101"
+                tagIds:
+                  type: string
+                  description: comma separated values
+                  example: 1,2,3
+              required:
+                - name
+                - description
+                - subscriptionStatus
+                - imageUrl
+                - cityId
+                - tagIds
+      responses:
+        "200":
+          description: Update Profile success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  error:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: user's name
+                        example: malik akbar
+                      description:
+                        type: string
+                        description: user's description
+                        example: I am a cool guys
+                      role:
+                        type: string
+                        enum: *a1
+                        description: user's role
+                        example: MENTEE
+                      email:
+                        type: string
+                        description: user's email
+                        example: user@gmail.com
+                      cityId:
+                        type: string
+                        description: user's city'
+                        example: "1101"
+                      imageUrl:
+                        anyOf:
+                          - type: string
+                          - nullable: true
+                          - nullable: true
+                        description: user's image url
+                        example: http://www.example.com
+                      subscriptionStatus:
+                        type: string
+                        enum: *a2
+                        description: user subscription status
+                        example: FREE
+                    required:
+                      - name
+                      - description
+                      - role
+                      - email
+                      - cityId
+                      - imageUrl
+                      - subscriptionStatus
+                required:
+                  - success
+                  - message
+                description: Update profile response
+    get:
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Get Self Profile success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  error:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: user's name
+                        example: malik akbar
+                      description:
+                        type: string
+                        description: user's description
+                        example: I am a cool guys
+                      role:
+                        type: string
+                        enum: *a1
+                        description: user's role
+                        example: MENTEE
+                      email:
+                        type: string
+                        description: user's email
+                        example: user@gmail.com
+                      cityId:
+                        type: string
+                        description: user's city'
+                        example: "1101"
+                      imageUrl:
+                        anyOf:
+                          - type: string
+                          - nullable: true
+                          - nullable: true
+                        description: user's image url
+                        example: http://www.example.com
+                      subscriptionStatus:
+                        type: string
+                        enum: *a2
+                        description: user subscription status
+                        example: FREE
+                    required:
+                      - name
+                      - description
+                      - role
+                      - email
+                      - cityId
+                      - imageUrl
+                      - subscriptionStatus
+                required:
+                  - success
+                  - message
+                description: Profile response
+  "/user/{id}":
+    get:
+      security:
+        - bearerAuth: []
+      parameters:
+        - schema:
+            type: string
+            description: User ID
+            example: "1"
+          required: true
+          name: id
+          in: path
+      responses:
+        "200":
+          description: Get Profile success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  error:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: user's name
+                        example: malik akbar
+                      description:
+                        type: string
+                        description: user's description
+                        example: I am a cool guys
+                      role:
+                        type: string
+                        enum: *a1
+                        description: user's role
+                        example: MENTEE
+                      email:
+                        type: string
+                        description: user's email
+                        example: user@gmail.com
+                      cityId:
+                        type: string
+                        description: user's city'
+                        example: "1101"
+                      imageUrl:
+                        anyOf:
+                          - type: string
+                          - nullable: true
+                          - nullable: true
+                        description: user's image url
+                        example: http://www.example.com
+                      subscriptionStatus:
+                        type: string
+                        enum: *a2
+                        description: user subscription status
+                        example: FREE
+                    required:
+                      - name
+                      - description
+                      - role
+                      - email
+                      - cityId
+                      - imageUrl
+                      - subscriptionStatus
+                required:
+                  - success
+                  - message
+                description: Profile response
+  /user:
+    get:
+      security:
+        - bearerAuth: []
+      parameters:
+        - schema:
+            type: string
+            enum:
+              - MENTOR
+              - MENTEE
+            description: user's role
+            example: MENTOR
+          required: false
+          name: role
+          in: query
+        - schema:
+            type: string
+            description: comma separated values
+            example: 1,2,3
+          required: false
+          name: tagIds
+          in: query
+        - schema:
+            type: boolean
+            description: user on my city
+            example: true
+          required: false
+          name: onMyCity
+          in: query
+        - schema:
+            type: boolean
+            description: user on my province
+            example: true
+          required: false
+          name: onMyProvince
+          in: query
+        - schema:
+            type: boolean
+            description: user premium only
+            example: true
+          required: false
+          name: premiumOnly
+          in: query
+      responses:
+        "200":
+          description: Search user success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  error:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: user's name
+                          example: malik akbar
+                        description:
+                          type: string
+                          description: user's description
+                          example: I am a cool guys
+                        role:
+                          type: string
+                          enum: *a1
+                          description: user's role
+                          example: MENTEE
+                        email:
+                          type: string
+                          description: user's email
+                          example: user@gmail.com
+                        cityId:
+                          type: string
+                          description: user's city'
+                          example: "1101"
+                        imageUrl:
+                          anyOf:
+                            - type: string
+                            - nullable: true
+                            - nullable: true
+                          description: user's image url
+                          example: http://www.example.com
+                        subscriptionStatus:
+                          type: string
+                          enum: *a2
+                          description: user subscription status
+                          example: FREE
+                      required:
+                        - name
+                        - description
+                        - role
+                        - email
+                        - cityId
+                        - imageUrl
+                        - subscriptionStatus
+                    description: Search user response data
+                required:
+                  - success
+                  - message
+                description: Search user response
