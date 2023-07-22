@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { zoa } from "../util";
+import { Prettify, zoa } from "../util";
 import { BaseResponse } from "./base";
 
 export const BookGroupSessionDTO = zoa.object({
@@ -84,6 +84,6 @@ export const RespGetDetailBookGroupSession = BaseResponse.merge(
     })
     .openapi({ description: "Get detail book group session response data" })
 ).openapi({ description: "Get detail book group session response" });
-export type IRespGetDetailBookGroupSession = z.infer<
+export type IRespGetDetailBookGroupSession = Prettify<z.infer<
   typeof RespGetDetailBookGroupSession
->;
+>>;

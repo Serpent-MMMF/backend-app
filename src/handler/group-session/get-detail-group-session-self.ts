@@ -60,7 +60,7 @@ export const getDetailGroupSessionSelf = async (
   }
 };
 
-export const getDetailGroupSessionHandler: IHandler = {
+export const getDetailGroupSessionSelfHandler: IHandler = {
   path: ENDPOINTS.GROUP_SESSION.GET_DETAIL_GROUP_SESSION_SELF.path,
   method: ENDPOINTS.GROUP_SESSION.GET_DETAIL_GROUP_SESSION_SELF.method,
   handler: getDetailGroupSessionSelf,
