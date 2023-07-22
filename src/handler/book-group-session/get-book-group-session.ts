@@ -1,12 +1,40 @@
 import { Request, Response } from "express";
-import { buildErr } from "../../contract/base";
+import { HttpStatusCode } from "../../constant";
+import {
+  IRespGetBookGroupSession,
+  QueryGetBookGroupSession,
+  RespGetBookGroupSession,
+  buildErr,
+} from "../../contract";
+import { authMiddleware } from "../../middleware/auth";
+import { bookGroupSessionUseCase } from "../../usecase/book-group-session";
 import { ENDPOINTS } from "../endpoints";
 import { IHandler } from "../types";
-import { authMiddleware } from "../../middleware";
 
 export const getBookGroupSession = async (req: Request, res: Response) => {
   try {
-    res.send("Not implemented");
+    const reqQuery = QueryGetBookGroupSession.safeParse(req.query);
+
+    if (!reqQuery.success) {
+      const response: IRespGetBookGroupSession = {
+        success: false,
+        message: "Invalid request query",
+        error: reqQuery.error.message,
+      };
+      return res.status(HttpStatusCode.Forbidden.code).json(response);
+    }
+
+    const bookGroupSessions = await bookGroupSessionUseCase.query(
+      reqQuery.data.menteeId,
+      reqQuery.data.sessionId
+    );
+
+    const response: IRespGetBookGroupSession = {
+      success: true,
+      message: "Get book group session success",
+      data: bookGroupSessions,
+    };
+    return res.status(HttpStatusCode.OK.code).json(response);
   } catch (err) {
     const { response, status } = buildErr(err);
     return res.status(status.code).json(response);
@@ -19,16 +47,16 @@ export const getBookGroupSessionHandler: IHandler = {
   handler: getBookGroupSession,
   middlewares: [authMiddleware],
   request: {
-    body: {
-      content: {},
-      required: true,
-      description: "Create group-session request body",
-    },
+    query: QueryGetBookGroupSession,
   },
   responses: {
     200: {
-      description: "Create group-session success response",
-      content: {},
+      description: "Get book group session success response",
+      content: {
+        "application/json": {
+          schema: RespGetBookGroupSession,
+        },
+      },
     },
   },
 };

@@ -1,15 +1,38 @@
 import { Request, Response } from "express";
-import { buildErr } from "../../contract/base";
+import { HttpStatusCode } from "../../constant";
+import {
+  IRespGetDetailBookGroupSession,
+  ParamsGetDetailBookGroupSession,
+  RespGetDetailBookGroupSession,
+  buildErr,
+} from "../../contract";
+import { authMiddleware } from "../../middleware/auth";
+import { bookGroupSessionUseCase } from "../../usecase/book-group-session";
 import { ENDPOINTS } from "../endpoints";
 import { IHandler } from "../types";
-import { authMiddleware } from "../../middleware";
 
 export const getDetailBookGroupSession = async (
   req: Request,
   res: Response
 ) => {
   try {
-    res.send("Not implemented");
+    const { id } = req.params;
+
+    const bookGroupSession = await bookGroupSessionUseCase.findById(id);
+    if (!bookGroupSession) {
+      const response: IRespGetDetailBookGroupSession = {
+        success: false,
+        message: "Book group session not found",
+      };
+      return res.status(HttpStatusCode.NotFound.code).json(response);
+    }
+
+    const response: IRespGetDetailBookGroupSession = {
+      success: true,
+      message: "Get detail book group session success",
+      data: bookGroupSession,
+    };
+    return res.status(HttpStatusCode.OK.code).json(response);
   } catch (err) {
     const { response, status } = buildErr(err);
     return res.status(status.code).json(response);
@@ -22,16 +45,16 @@ export const getDetailBookGroupSessionHandler: IHandler = {
   handler: getDetailBookGroupSession,
   middlewares: [authMiddleware],
   request: {
-    body: {
-      content: {},
-      required: true,
-      description: "Create group-session request body",
-    },
+    params: ParamsGetDetailBookGroupSession,
   },
   responses: {
     200: {
-      description: "Create group-session success response",
-      content: {},
+      description: "Get detail book group session success response",
+      content: {
+        "application/json": {
+          schema: RespGetDetailBookGroupSession,
+        },
+      },
     },
   },
 };
