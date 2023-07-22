@@ -1,7 +1,8 @@
-import express, { Express, Request, Response } from "express";
 import bodyParser from "body-parser";
+import cors from "cors";
+import express, { Express, Request, Response } from "express";
 import morgan from "morgan";
-import { userRepo } from "./repo/user";
+import swaggerUi from "swagger-ui-express";
 import {
   authHandlers,
   bookGroupSessionHandlers,
@@ -11,11 +12,10 @@ import {
   provinceHandlers,
   tagHandlers,
 } from "./handler";
+import { discussionHandlers } from "./handler/discussion";
 import { IHandler } from "./handler/types";
-import cors from "cors";
-import { generateDocs } from "./util/documentation";
-import swaggerUi from "swagger-ui-express";
 import { userHandlers } from "./handler/user";
+import { generateDocs } from "./util/documentation";
 
 const app = express();
 const port = 9999;
@@ -50,6 +50,7 @@ const handlers = [
   ...tagHandlers,
   ...userHandlers,
   ...oneOnOneHandlers,
+  ...discussionHandlers,
 ];
 registerRoutes(app, handlers);
 
