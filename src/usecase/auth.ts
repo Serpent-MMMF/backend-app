@@ -6,7 +6,9 @@ import { ILoginData, IReqLogin, IUserDTO } from "../contract";
 import { HttpStatusCode } from "../constant";
 import jwt from "jsonwebtoken";
 import { CONFIG, ITokenContent } from "../internal";
-import { verifyHash } from "../util/hash";
+import { verifyHash, hash } from "../util/hash";
+import { ITagRepo } from "../repo";
+import { ITagUsecase, tagUsecase } from "./tag";
 
 export type IRegisterParams = {
   description: string;
@@ -30,19 +32,30 @@ export type IAuthUsecase = {
 
 export class AuthUsecase implements IAuthUsecase {
   private userRepo: IUserRepo;
+  private tagUsecase: ITagUsecase;
 
-  constructor(params: { userRepo: IUserRepo }) {
+  constructor(params: { userRepo: IUserRepo; tagUsecase: ITagUsecase }) {
     this.userRepo = params.userRepo;
+    this.tagUsecase = params.tagUsecase;
   }
 
-  register(params: IRegisterParams) {
-    const { tagIds, ...rest } = params;
+  async register(params: IRegisterParams) {
+    const { password, tagIds, ...rest } = params;
+    const { hashed } = await hash(password);
 
-    return this.userRepo.create({
-      ...rest,
+    const user = await this.userRepo.create({
       imageUrl: null,
+      ...rest,
+      password: hashed,
       subscriptionStatus: SubscriptionStatus.FREE,
     });
+
+    const tagIdsArr = tagIds.split(",");
+    await this.tagUsecase.upsertUserTag(tagIdsArr, user.id);
+
+    const { password: p, ...userDTO } = user;
+
+    return userDTO;
   }
 
   async login({ email, password }: ILoginParams) {
@@ -84,4 +97,5 @@ export class AuthUsecase implements IAuthUsecase {
 
 export const authUsecase: IAuthUsecase = new AuthUsecase({
   userRepo,
+  tagUsecase,
 });

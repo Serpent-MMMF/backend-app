@@ -7,6 +7,12 @@ import fs from "fs";
 
 const clearDB = async () => {
   const ops = [
+    prisma.discussion.deleteMany(),
+    prisma.oneOnOne.deleteMany(),
+    prisma.bookGroupSession.deleteMany(),
+    prisma.groupSession.deleteMany(),
+    prisma.userTag.deleteMany(),
+    prisma.tag.deleteMany(),
     prisma.user.deleteMany(),
     prisma.city.deleteMany(),
     prisma.province.deleteMany(),
@@ -93,7 +99,7 @@ const main = async () => {
     }
 
     console.log("seeding users");
-    const users = await seedUsers(city);
+    // const users = await seedUsers(city);
 
     console.log("finish seeding");
   } catch (err) {
