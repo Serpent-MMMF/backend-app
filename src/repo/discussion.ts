@@ -1,8 +1,12 @@
 import { PrismaClient } from "@prisma/client";
+import type {
+  DiscussionModel,
+  OptionalDiscussionModel,
+  OptionalExceptIdDiscussionModel,
+} from "../model";
 import { prisma } from "../service";
-import type { DiscussionModel, OptionalDiscussionModel, OptionalExceptIdDiscussionModel } from "../model";
-import type { Repo } from "./base";
 import { AllOptional } from "../util";
+import type { Repo } from "./base";
 
 export class DiscussionRepo {
   private prisma: PrismaClient;

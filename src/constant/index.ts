@@ -182,11 +182,12 @@ export type REST_METHOD_VALUES = (typeof REST_METHOD)[REST_METHOD_KEYS];
 export const BASE_PATH = {
   AUTH: "/auth",
   USER: "/user",
-  BOOK_GROUP_SESSION: "/book-group-session",
-  GROUP_SESSION: "/group-session",
+  TAG: "/tag",
   CITY: "/city",
   PROVINCE: "/province",
-  TAG: "/tag",
+  BOOK_GROUP_SESSION: "/book-group-session",
+  GROUP_SESSION: "/group-session",
+  DISCUSSION: "/discussion",
 } as const;
 
 export type BASE_PATH_KEYS = keyof typeof BASE_PATH;

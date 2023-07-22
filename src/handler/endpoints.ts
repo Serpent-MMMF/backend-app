@@ -70,4 +70,14 @@ export const ENDPOINTS = {
       method: REST_METHOD.GET,
     },
   },
+  DISCUSSION: {
+    CREATE_DISCUSSION: {
+      path: BASE_PATH.DISCUSSION,
+      method: REST_METHOD.POST,
+    },
+    GET_DISCUSSION: {
+      path: BASE_PATH.DISCUSSION,
+      method: REST_METHOD.GET,
+    },
+  },
 } as const;

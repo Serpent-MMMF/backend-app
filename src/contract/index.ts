@@ -2,6 +2,7 @@ export * from "./auth";
 export * from "./base";
 export * from "./book-group-session";
 export * from "./city";
+export * from "./discussion";
 export * from "./group-session";
 export * from "./province";
 export * from "./tag";
