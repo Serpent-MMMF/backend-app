@@ -1,24 +1,14 @@
 import { Request, Response } from "express";
-import { IRespSelfProfile, RespSelfProfile, buildErr } from "../../contract";
-import { IHandler } from "../types";
-import { ENDPOINTS } from "../endpoints";
-import { authMiddleware } from "../../middleware/auth";
-import { zoa } from "../../util";
-import { ITokenContent } from "../../internal";
 import { HttpStatusCode } from "../../constant";
+import { IRespSelfProfile, RespSelfProfile, buildErr } from "../../contract";
+import { authMiddleware } from "../../middleware/auth";
 import { userUsecase } from "../../usecase";
+import { ENDPOINTS } from "../endpoints";
+import { IHandler, ITokenContent } from "../types";
 
 export const selfProfile = async (req: Request, res: Response) => {
   try {
-    const tokenContent: ITokenContent | undefined = res.locals.tokenContent;
-    if (!tokenContent) {
-      const response: IRespSelfProfile = {
-        success: false,
-        message: "Token content not found",
-        error: "Token content not found",
-      };
-      return res.status(HttpStatusCode.Unauthorized.code).json(response);
-    }
+    const tokenContent: ITokenContent = res.locals.tokenContent;
 
     const user = await userUsecase.findById(tokenContent.id);
     if (!user) {
@@ -32,7 +22,7 @@ export const selfProfile = async (req: Request, res: Response) => {
 
     const response: IRespSelfProfile = {
       success: true,
-      message: "Get Self Profile success",
+      message: "Get self profile success",
       data: user,
     };
     return res.status(HttpStatusCode.OK.code).json(response);
@@ -51,7 +41,7 @@ export const selfProfileHandler: IHandler = {
   request: {},
   responses: {
     200: {
-      description: "Get Self Profile success response",
+      description: "Get self profile success response",
       content: {
         "application/json": {
           schema: RespSelfProfile,

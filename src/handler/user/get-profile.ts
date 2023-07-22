@@ -1,11 +1,14 @@
 import { Request, Response } from "express";
-import { IRespSelfProfile, RespGetProfile, buildErr } from "../../contract";
-import { IHandler } from "../types";
-import { ENDPOINTS } from "../endpoints";
-import { authMiddleware } from "../../middleware/auth";
-import { zoa } from "../../util";
 import { HttpStatusCode } from "../../constant";
+import {
+  IRespSelfProfile,
+  ParamsGetProfile,
+  RespGetProfile,
+  buildErr,
+} from "../../contract";
 import { userUsecase } from "../../usecase";
+import { ENDPOINTS } from "../endpoints";
+import { IHandler } from "../types";
 
 export const getProfile = async (req: Request, res: Response) => {
   try {
@@ -13,8 +16,8 @@ export const getProfile = async (req: Request, res: Response) => {
     if (!userId) {
       const response: IRespSelfProfile = {
         success: false,
-        message: "User ID not found",
-        error: "User ID not found",
+        message: "User id not found",
+        error: "User id not found",
       };
       return res.status(HttpStatusCode.BadRequest.code).json(response);
     }
@@ -31,7 +34,7 @@ export const getProfile = async (req: Request, res: Response) => {
 
     const response: IRespSelfProfile = {
       success: true,
-      message: "Get Profile success",
+      message: "Get profile success",
       data: user,
     };
     return res.status(HttpStatusCode.OK.code).json(response);
@@ -48,16 +51,11 @@ export const getProfileHandler: IHandler = {
   handler: getProfile,
   middlewares: [],
   request: {
-    params: zoa.object({
-      id: zoa.string().openapi({
-        description: "User ID",
-        example: "1",
-      }),
-    }),
+    params: ParamsGetProfile,
   },
   responses: {
     200: {
-      description: "Get Profile success response",
+      description: "Get profile success response",
       content: {
         "application/json": {
           schema: RespGetProfile,

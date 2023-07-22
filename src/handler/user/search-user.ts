@@ -7,44 +7,39 @@ import {
   RespSearchUser,
   buildErr,
 } from "../../contract";
-import { ITokenContent } from "../../internal";
+
 import { optionalAuthMiddleware } from "../../middleware/optional-auth";
 import { userUsecase } from "../../usecase";
 import { ENDPOINTS } from "../endpoints";
-import { IHandler } from "../types";
-
-const buildQuery = (reqQuery: Request["query"]) => {
-  const query: IQuerySearchUser = {
-    role:
-      typeof reqQuery.role === "string"
-        ? (reqQuery.role as "MENTOR" | "MENTEE")
-        : undefined,
-    tagIds: typeof reqQuery.tagIds === "string" ? reqQuery.tagIds : "",
-    onMyCity:
-      typeof reqQuery.onMyCity === "string"
-        ? reqQuery.onMyCity === "true"
-          ? true
-          : undefined
-        : undefined,
-    onMyProvince:
-      typeof reqQuery.onMyProvince === "string"
-        ? reqQuery.onMyProvince === "true"
-          ? true
-          : undefined
-        : undefined,
-    premiumOnly:
-      typeof reqQuery.premiumOnly === "string"
-        ? reqQuery.premiumOnly === "true"
-          ? true
-          : undefined
-        : undefined,
-  };
-  return query;
-};
+import { IHandler, ITokenContent } from "../types";
 
 export const searchUser = async (req: Request, res: Response) => {
   try {
-    const query = buildQuery(req.query);
+    const query: IQuerySearchUser = {
+      role:
+        typeof req.query.role === "string"
+          ? (req.query.role as "MENTOR" | "MENTEE")
+          : undefined,
+      tagIds: typeof req.query.tagIds === "string" ? req.query.tagIds : "",
+      onMyCity:
+        typeof req.query.onMyCity === "string"
+          ? req.query.onMyCity === "true"
+            ? true
+            : undefined
+          : undefined,
+      onMyProvince:
+        typeof req.query.onMyProvince === "string"
+          ? req.query.onMyProvince === "true"
+            ? true
+            : undefined
+          : undefined,
+      premiumOnly:
+        typeof req.query.premiumOnly === "string"
+          ? req.query.premiumOnly === "true"
+            ? true
+            : undefined
+          : undefined,
+    };
 
     const tokenContent: ITokenContent | undefined = res.locals.tokenContent;
     if (!tokenContent) {

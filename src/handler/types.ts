@@ -1,6 +1,7 @@
+import { RouteConfig } from "@asteasolutions/zod-to-openapi";
+import { Role } from "@prisma/client";
 import { RequestHandler } from "express";
 import { REST_METHOD_VALUES } from "../constant";
-import { RouteConfig } from "@asteasolutions/zod-to-openapi";
 import { Prettify } from "../util";
 
 export type IHandler = Prettify<
@@ -13,3 +14,9 @@ export type IHandler = Prettify<
 
 export type RequestConfig = Pick<RouteConfig, "request">;
 export type ResponseConfig = Pick<RouteConfig, "responses">;
+
+export type ITokenContent = {
+  id: string;
+  email: string;
+  role: Role;
+};

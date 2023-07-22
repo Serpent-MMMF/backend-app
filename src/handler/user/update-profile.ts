@@ -1,25 +1,20 @@
-import { RequestHandler } from "express";
-import { IRespUpdateProfile, ReqUpdateProfile, RespUpdateProfile, buildErr } from "../../contract";
-import { Request, Response } from "express";
-import { ITokenContent } from "../../internal";
-import { HttpStatusCode } from "../../constant";
-import { tagUsecase, userUsecase } from "../../usecase";
 import { SubscriptionStatus } from "@prisma/client";
-import { authMiddleware } from "../../middleware";
+import { Request, Response } from "express";
+import { HttpStatusCode } from "../../constant";
+import {
+  IRespUpdateProfile,
+  ReqUpdateProfile,
+  RespUpdateProfile,
+  buildErr,
+} from "../../contract";
+import { authMiddleware } from "../../middleware/auth";
+import { tagUsecase, userUsecase } from "../../usecase";
 import { ENDPOINTS } from "../endpoints";
-import { IHandler } from "../types";
+import { IHandler, ITokenContent } from "../types";
 
-export const updateProfile: RequestHandler = async (req, res) => {
+export const updateProfile = async (req: Request, res: Response) => {
   try {
-    const tokenContent: ITokenContent | undefined = res.locals.tokenContent;
-    if (!tokenContent) {
-      const response: IRespUpdateProfile = {
-        success: false,
-        message: "Token content not found",
-        error: "Token content not found",
-      };
-      return res.status(HttpStatusCode.Unauthorized.code).json(response);
-    }
+    const tokenContent: ITokenContent = res.locals.tokenContent;
 
     const reqBody = ReqUpdateProfile.safeParse(req.body);
     if (!reqBody.success) {
@@ -68,12 +63,12 @@ export const updateProfileHandler: IHandler = {
         },
       },
       required: true,
-      description: "Update Profile request body",
+      description: "Update profile request body",
     },
   },
   responses: {
     200: {
-      description: "Update Profile success response",
+      description: "Update profile success response",
       content: {
         "application/json": {
           schema: RespUpdateProfile,

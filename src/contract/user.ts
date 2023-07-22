@@ -83,6 +83,15 @@ export const RespSelfProfile = BaseResponse.merge(
 ).openapi({ description: "Profile response" });
 export type IRespSelfProfile = z.infer<typeof RespSelfProfile>;
 
+export const ParamsGetProfile = zoa.object({
+  id: zoa.string().openapi({
+    description: "user's id",
+    example: "1",
+  }),
+});
+
+export type IParamsGetProfile = z.infer<typeof ParamsGetProfile>;
+
 export const RespGetProfile = BaseResponse.merge(
   zoa
     .object({
