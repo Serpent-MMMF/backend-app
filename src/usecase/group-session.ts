@@ -3,7 +3,7 @@ import {
   IQueryGetGroupSession,
   IReqCreateGroupSession,
 } from "../contract/group-session";
-import { groupSessionRepo, IGroupSessionRepo } from "../repo/group-session";
+import { IGroupSessionRepo, groupSessionRepo } from "../repo/group-session";
 
 export class GroupSessionUseCase implements IGroupSessionUseCase {
   private groupSessionRepository: IGroupSessionRepo;
@@ -13,6 +13,10 @@ export class GroupSessionUseCase implements IGroupSessionUseCase {
   }
 
   async create(mentorId: string, params: IReqCreateGroupSession) {
+    if (params.date < new Date()) {
+      throw new Error("Date must be greater than now");
+    }
+
     const groupSession = await this.groupSessionRepository.create({
       mentorId: mentorId,
       ...params,
@@ -26,7 +30,7 @@ export class GroupSessionUseCase implements IGroupSessionUseCase {
       params.limitStartDateTime,
       params.limitEndDateTime,
       {
-        mentorId: params.mentorId,
+        mentorId: params.mentorId ? params.mentorId : undefined,
       }
     );
 
