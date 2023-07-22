@@ -1,5 +1,5 @@
 import { CityModel, TagModel, UserModel } from "../src/model";
-import { ApprovalStatus, Role } from "@prisma/client";
+import { ApprovalStatus, Role, SubscriptionStatus } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 import { AuthUsecase, IRegisterParams } from "../src/usecase/auth";
 import { prisma } from "../src/service/db";
@@ -17,6 +17,7 @@ import {
   TagUsecase,
   OneOnOneUsecase,
   DiscussionUseCase,
+  userUsecase,
 } from "../src/usecase/";
 
 const userRepo = new UserRepo(prisma);
@@ -182,11 +183,27 @@ const seedUsers = async (tags: TagModel[]) => {
       };
     });
 
-  return await Promise.all([
+  const createdUsers = await Promise.all([
     authUsecase.register(mentee),
     authUsecase.register(mentor),
     ...users.map((u) => authUsecase.register(u)),
   ]);
+
+  await Promise.all(
+    createdUsers
+      .filter((u) => u.role === Role.MENTOR)
+      .map((u) => {
+        return prisma.user.update({
+          data: {
+            ...u,
+            subscriptionStatus: SubscriptionStatus.PREMIUM,
+          },
+          where: {
+            id: u.id,
+          },
+        });
+      })
+  );
 };
 
 const seedGroupSession = async () => {
@@ -302,7 +319,7 @@ const seedOneOnOne = async () => {
         return oneOnOneUsecase.update({
           ...o,
           review: faker.lorem.paragraph(),
-          rating: Math.floor(Math.random() * 5) + 2,
+          rating: Math.floor(Math.random() * 4) + 2,
         });
       })
   );
