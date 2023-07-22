@@ -31,8 +31,8 @@ export type IAuthUsecase = {
 };
 
 export class AuthUsecase implements IAuthUsecase {
-  private userRepo: IUserRepo;
-  private tagUsecase: ITagUsecase;
+  private readonly userRepo: IUserRepo;
+  private readonly tagUsecase: ITagUsecase;
 
   constructor(params: { userRepo: IUserRepo; tagUsecase: ITagUsecase }) {
     this.userRepo = params.userRepo;
@@ -42,6 +42,9 @@ export class AuthUsecase implements IAuthUsecase {
   async register(params: IRegisterParams) {
     const { password, tagIds, ...rest } = params;
     const { hashed } = await hash(password);
+
+    console.log("userRepo", userRepo.findOne);
+    console.log("tagUsecase", tagUsecase.findTags);
 
     const user = await this.userRepo.create({
       imageUrl: null,
