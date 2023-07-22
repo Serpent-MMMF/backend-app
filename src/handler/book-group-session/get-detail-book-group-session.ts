@@ -10,7 +10,7 @@ import {
 import { authMiddleware } from "../../middleware/auth";
 import { bookGroupSessionUseCase } from "../../usecase/";
 import { ENDPOINTS } from "../endpoints";
-import { IHandler } from "../types";
+import { IHandler, ITokenContent } from "../types";
 
 export const getDetailBookGroupSession = async (
   req: Request,
@@ -28,8 +28,17 @@ export const getDetailBookGroupSession = async (
       return res.status(HttpStatusCode.NotFound.code).json(response);
     }
 
-    const user = res.locals.tokenContent;
-    if (bookGroupSession.menteeId !== user.id) {
+    const tokenContent: ITokenContent | undefined = res.locals.tokenContent;
+    if (!tokenContent) {
+      const response: IRespGetDetailBookGroupSession = {
+        success: false,
+        message: "Token not found",
+        error: "Token not found",
+      };
+      return res.status(HttpStatusCode.Unauthorized.code).json(response);
+    }
+
+    if (bookGroupSession.menteeId !== tokenContent.id) {
       const response: IRespGetDetailBookGroupSession = {
         success: false,
         message: "You don't book this book group session",

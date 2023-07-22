@@ -14,7 +14,15 @@ import { IHandler, ITokenContent } from "../types";
 
 export const updateProfile = async (req: Request, res: Response) => {
   try {
-    const tokenContent: ITokenContent = res.locals.tokenContent;
+    const tokenContent: ITokenContent | undefined = res.locals.tokenContent;
+    if (!tokenContent) {
+      const response: IRespUpdateProfile = {
+        success: false,
+        message: "Token not found",
+        error: "Token not found",
+      };
+      return res.status(HttpStatusCode.Unauthorized.code).json(response);
+    }
 
     const reqBody = ReqUpdateProfile.safeParse(req.body);
     if (!reqBody.success) {

@@ -10,7 +10,7 @@ import { authMiddleware } from "../../middleware/auth";
 import { menteeCheckMiddleware } from "../../middleware/mentee-check";
 import { bookGroupSessionUseCase } from "../../usecase";
 import { ENDPOINTS } from "../endpoints";
-import { IHandler } from "../types";
+import { IHandler, ITokenContent } from "../types";
 
 export const createBookGroupSession = async (req: Request, res: Response) => {
   try {
@@ -25,9 +25,18 @@ export const createBookGroupSession = async (req: Request, res: Response) => {
       return res.status(HttpStatusCode.Forbidden.code).json(response);
     }
 
-    const user = res.locals.tokenContent;
+    const tokenContent: ITokenContent | undefined = res.locals.tokenContent;
+    if (!tokenContent) {
+      const response: IRespCreateBookGroupSession = {
+        success: false,
+        message: "Token not found",
+        error: "Token not found",
+      };
+      return res.status(HttpStatusCode.Unauthorized.code).json(response);
+    }
+
     const bookGroupSession = await bookGroupSessionUseCase.create(
-      user.id,
+      tokenContent.id,
       reqBody.data.sessionId
     );
 

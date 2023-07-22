@@ -7,9 +7,9 @@ import {
   buildErr,
 } from "../../contract";
 import { authMiddleware } from "../../middleware/auth";
-import { discussionUseCase } from "../../usecase/";
+import { discussionUseCase, userUsecase } from "../../usecase/";
 import { ENDPOINTS } from "../endpoints";
-import { IHandler } from "../types";
+import { IHandler, ITokenContent } from "../types";
 
 export const createDiscussion = async (req: Request, res: Response) => {
   try {
@@ -24,9 +24,28 @@ export const createDiscussion = async (req: Request, res: Response) => {
       return res.status(HttpStatusCode.Forbidden.code).json(response);
     }
 
-    const user = res.locals.tokenContent;
+    const tokenContent: ITokenContent | undefined = res.locals.tokenContent;
+    if (!tokenContent) {
+      const response: IRespCreateDiscussion = {
+        success: false,
+        message: "Token not found",
+        error: "Token not found",
+      };
+      return res.status(HttpStatusCode.Unauthorized.code).json(response);
+    }
+
+    const user = await userUsecase.findById(tokenContent.id);
+    if (!user) {
+      const response: IRespCreateDiscussion = {
+        success: false,
+        message: "User not found",
+        error: "User not found",
+      };
+      return res.status(HttpStatusCode.NotFound.code).json(response);
+    }
+
     const discussion = await discussionUseCase.create(
-      user.id,
+      tokenContent.id,
       user.role,
       reqBody.data
     );

@@ -18,9 +18,17 @@ export const getDetailGroupSessionSelf = async (
 ) => {
   try {
     const { id } = req.params as IParamsIdGroupSession;
-
-    const tokenContent: ITokenContent = res.locals.tokenContent;
-
+    
+    const tokenContent: ITokenContent | undefined = res.locals.tokenContent;
+    if (!tokenContent) {
+      const response: IRespGroupSessionDetailSelf = {
+        success: false,
+        message: "Token not found",
+        error: "Token not found",
+      };
+      return res.status(HttpStatusCode.Unauthorized.code).json(response);
+    }
+    
     const user = await userUsecase.findById(tokenContent.id);
     if (!user) {
       const response: IRespGroupSessionDetailSelf = {
