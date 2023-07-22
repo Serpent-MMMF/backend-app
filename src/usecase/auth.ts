@@ -43,7 +43,10 @@ export class AuthUsecase implements IAuthUsecase {
     const { password, tagIds, ...rest } = params;
     const { hashed } = await hash(password);
 
-    const user = await this.userRepo.create({
+    // console.log("userRepo", userRepo.findOne);
+    // console.log("tagUsecase", tagUsecase.findTags);
+
+    const user = await userRepo.create({
       imageUrl: null,
       ...rest,
       password: hashed,
@@ -51,7 +54,7 @@ export class AuthUsecase implements IAuthUsecase {
     });
 
     const tagIdsArr = tagIds.split(",");
-    await this.tagUsecase.upsertUserTag(tagIdsArr, user.id);
+    await tagUsecase.upsertUserTag(tagIdsArr, user.id);
 
     const { password: p, ...userDTO } = user;
 
