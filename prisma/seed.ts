@@ -190,9 +190,23 @@ const seedUsers = async (tags: TagModel[]) => {
   ]);
 
   await Promise.all(
+    createdUsers.map(async (u) => {
+      return prisma.user.update({
+        data: {
+          ...u,
+          imageUrl: "/images/person-" + Math.floor(Math.random() * 10) + ".png",
+        },
+        where: {
+          id: u.id,
+        },
+      });
+    })
+  );
+
+  await Promise.all(
     createdUsers
       .filter((u) => u.role === Role.MENTOR)
-      .filter(_ => Math.random() < 0.3)
+      .filter((_) => Math.random() < 0.3)
       .map((u) => {
         return prisma.user.update({
           data: {
