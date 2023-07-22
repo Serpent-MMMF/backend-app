@@ -56,6 +56,20 @@ paths:
                       user:
                         type: object
                         properties:
+                          id:
+                            type: string
+                            description: User ID
+                            example: "1"
+                          createdAt:
+                            type: string
+                            nullable: true
+                            description: user's created at
+                            example: 2021-08-01T00:00:00.000Z
+                          updatedAt:
+                            type: string
+                            nullable: true
+                            description: user's updated at
+                            example: 2021-08-01T00:00:00.000Z
                           name:
                             type: string
                             description: user's name
@@ -94,6 +108,9 @@ paths:
                             description: user subscription status
                             example: FREE
                         required:
+                          - id
+                          - createdAt
+                          - updatedAt
                           - name
                           - description
                           - role
@@ -180,6 +197,20 @@ paths:
                   data:
                     type: object
                     properties:
+                      id:
+                        type: string
+                        description: User ID
+                        example: "1"
+                      createdAt:
+                        type: string
+                        nullable: true
+                        description: user's created at
+                        example: 2021-08-01T00:00:00.000Z
+                      updatedAt:
+                        type: string
+                        nullable: true
+                        description: user's updated at
+                        example: 2021-08-01T00:00:00.000Z
                       name:
                         type: string
                         description: user's name
@@ -214,6 +245,9 @@ paths:
                         description: user subscription status
                         example: FREE
                     required:
+                      - id
+                      - createdAt
+                      - updatedAt
                       - name
                       - description
                       - role
@@ -1145,6 +1179,20 @@ paths:
                   data:
                     type: object
                     properties:
+                      id:
+                        type: string
+                        description: User ID
+                        example: "1"
+                      createdAt:
+                        type: string
+                        nullable: true
+                        description: user's created at
+                        example: 2021-08-01T00:00:00.000Z
+                      updatedAt:
+                        type: string
+                        nullable: true
+                        description: user's updated at
+                        example: 2021-08-01T00:00:00.000Z
                       name:
                         type: string
                         description: user's name
@@ -1179,6 +1227,9 @@ paths:
                         description: user subscription status
                         example: FREE
                     required:
+                      - id
+                      - createdAt
+                      - updatedAt
                       - name
                       - description
                       - role
@@ -1210,6 +1261,20 @@ paths:
                   data:
                     type: object
                     properties:
+                      id:
+                        type: string
+                        description: User ID
+                        example: "1"
+                      createdAt:
+                        type: string
+                        nullable: true
+                        description: user's created at
+                        example: 2021-08-01T00:00:00.000Z
+                      updatedAt:
+                        type: string
+                        nullable: true
+                        description: user's updated at
+                        example: 2021-08-01T00:00:00.000Z
                       name:
                         type: string
                         description: user's name
@@ -1244,6 +1309,9 @@ paths:
                         description: user subscription status
                         example: FREE
                     required:
+                      - id
+                      - createdAt
+                      - updatedAt
                       - name
                       - description
                       - role
@@ -1284,6 +1352,20 @@ paths:
                   data:
                     type: object
                     properties:
+                      id:
+                        type: string
+                        description: User ID
+                        example: "1"
+                      createdAt:
+                        type: string
+                        nullable: true
+                        description: user's created at
+                        example: 2021-08-01T00:00:00.000Z
+                      updatedAt:
+                        type: string
+                        nullable: true
+                        description: user's updated at
+                        example: 2021-08-01T00:00:00.000Z
                       name:
                         type: string
                         description: user's name
@@ -1318,6 +1400,9 @@ paths:
                         description: user subscription status
                         example: FREE
                     required:
+                      - id
+                      - createdAt
+                      - updatedAt
                       - name
                       - description
                       - role
@@ -1391,6 +1476,20 @@ paths:
                     items:
                       type: object
                       properties:
+                        id:
+                          type: string
+                          description: User ID
+                          example: "1"
+                        createdAt:
+                          type: string
+                          nullable: true
+                          description: user's created at
+                          example: 2021-08-01T00:00:00.000Z
+                        updatedAt:
+                          type: string
+                          nullable: true
+                          description: user's updated at
+                          example: 2021-08-01T00:00:00.000Z
                         name:
                           type: string
                           description: user's name
@@ -1425,6 +1524,9 @@ paths:
                           description: user subscription status
                           example: FREE
                       required:
+                        - id
+                        - createdAt
+                        - updatedAt
                         - name
                         - description
                         - role

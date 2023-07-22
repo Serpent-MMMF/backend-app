@@ -154,7 +154,7 @@ const seedUsers = async (tags: TagModel[]) => {
       .join(","),
   };
 
-  const users = Array(100)
+  const users = Array(20)
     .fill({})
     .map((_, idx) => {
       const role = Math.random() > 0.5 ? Role.MENTOR : Role.MENTEE;
