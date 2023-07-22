@@ -189,7 +189,7 @@ const seedUsers = async (tags: TagModel[]) => {
     ...users.map((u) => authUsecase.register(u)),
   ]);
 
-  await Promise.all(
+  const updatedUsers = await Promise.all(
     createdUsers.map(async (u) => {
       return prisma.user.update({
         data: {
@@ -204,7 +204,7 @@ const seedUsers = async (tags: TagModel[]) => {
   );
 
   await Promise.all(
-    createdUsers
+    updatedUsers
       .filter((u) => u.role === Role.MENTOR)
       .filter((_) => Math.random() < 0.3)
       .map((u) => {
