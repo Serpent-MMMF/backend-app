@@ -218,7 +218,7 @@ const seedGroupSession = async () => {
       .map(async (user) => {
         return prisma.groupSession.create({
           data: {
-            name: "Group Session " + faker.company.name,
+            name: "Group Session " + faker.company.name(),
             date: Math.random() > 0.5 ? faker.date.past() : faker.date.future(),
             meetingUrl: genUrl(),
             mentorId: user.id,
