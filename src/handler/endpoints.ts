@@ -97,4 +97,30 @@ export const ENDPOINTS = {
       method: REST_METHOD.GET,
     },
   },
+  ONE_ON_ONE: {
+    CREATE_ONE_ON_ONE: {
+      path: BASE_PATH.ONE_ON_ONE,
+      method: REST_METHOD.POST,
+    },
+    GET_ONE_ON_ONE: {
+      path: BASE_PATH.ONE_ON_ONE,
+      method: REST_METHOD.GET,
+    },
+    GET_DETAIL_ONE_ON_ONE: {
+      path: BASE_PATH.ONE_ON_ONE + "/:id",
+      method: REST_METHOD.GET,
+    },
+    APPROVE_ONE_ON_ONE: {
+      path: BASE_PATH.ONE_ON_ONE + "/:id/approve",
+      method: REST_METHOD.PATCH,
+    },
+    REJECT_ONE_ON_ONE: {
+      path: BASE_PATH.ONE_ON_ONE + "/:id/reject",
+      method: REST_METHOD.PATCH,
+    },
+    ADD_RATING_REVIEW_ONE_ON_ONE: {
+      path: BASE_PATH.ONE_ON_ONE + "/:id/rating-review",
+      method: REST_METHOD.POST,
+    },
+  },
 } as const;
