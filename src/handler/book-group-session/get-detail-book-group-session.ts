@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { HttpStatusCode } from "../../constant";
 import {
+  IParamsIdBookGroupSession,
   IRespGetDetailBookGroupSession,
-  ParamsGetDetailBookGroupSession,
+  ParamsIdBookGroupSession,
   RespGetDetailBookGroupSession,
   buildErr,
 } from "../../contract";
@@ -16,7 +17,7 @@ export const getDetailBookGroupSession = async (
   res: Response
 ) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params as IParamsIdBookGroupSession;
 
     const bookGroupSession = await bookGroupSessionUseCase.findById(id);
     if (!bookGroupSession) {
@@ -25,6 +26,15 @@ export const getDetailBookGroupSession = async (
         message: "Book group session not found",
       };
       return res.status(HttpStatusCode.NotFound.code).json(response);
+    }
+
+    const user = res.locals.tokenContent;
+    if (bookGroupSession.menteeId !== user.id) {
+      const response: IRespGetDetailBookGroupSession = {
+        success: false,
+        message: "You don't book this book group session",
+      };
+      return res.status(HttpStatusCode.Forbidden.code).json(response);
     }
 
     const response: IRespGetDetailBookGroupSession = {
@@ -45,7 +55,7 @@ export const getDetailBookGroupSessionHandler: IHandler = {
   handler: getDetailBookGroupSession,
   middlewares: [authMiddleware],
   request: {
-    params: ParamsGetDetailBookGroupSession,
+    params: ParamsIdBookGroupSession,
   },
   responses: {
     200: {

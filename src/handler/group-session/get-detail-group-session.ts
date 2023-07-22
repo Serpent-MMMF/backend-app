@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { HttpStatusCode } from "../../constant";
 import {
-  IParamsGetDetailGroupSession,
+  IParamsIdGroupSession,
   IRespCreateGroupSession,
-  ParamsGetDetailGroupSession,
+  ParamsIdGroupSession,
   RespGetDetailGroupSession,
   buildErr,
 } from "../../contract";
@@ -13,7 +13,7 @@ import { IHandler } from "../types";
 
 export const getDetailGroupSession = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params as IParamsGetDetailGroupSession;
+    const { id } = req.params as IParamsIdGroupSession;
 
     const groupSession = await groupSessionUseCase.findById(id);
     if (!groupSession) {
@@ -42,7 +42,7 @@ export const getDetailGroupSessionHandler: IHandler = {
   handler: getDetailGroupSession,
   middlewares: [],
   request: {
-    params: ParamsGetDetailGroupSession,
+    params: ParamsIdGroupSession,
   },
   responses: {
     200: {

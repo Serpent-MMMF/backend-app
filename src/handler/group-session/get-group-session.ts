@@ -20,7 +20,7 @@ export const getGroupSession = async (req: Request, res: Response) => {
         message: "Invalid request query",
         error: reqQuery.error.message,
       };
-      return res.status(400).json(response);
+      return res.status(HttpStatusCode.Forbidden.code).json(response);
     }
 
     const groupSessions = await groupSessionUseCase.query(reqQuery.data);

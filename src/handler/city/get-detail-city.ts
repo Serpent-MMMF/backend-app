@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { HttpStatusCode } from "../../constant";
 import {
-  IParamsGetDetailCity,
+  IParamsIdCity,
   IRespGetDetailCity,
-  ParamsGetDetailCity,
+  ParamsIdCity,
   RespGetDetailCity,
   buildErr,
 } from "../../contract";
@@ -13,7 +13,7 @@ import { IHandler } from "../types";
 
 export const getDetailCity = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params as IParamsGetDetailCity;
+    const { id } = req.params as IParamsIdCity;
 
     const city = await cityUsecase.findById(id);
     if (!city) {
@@ -43,7 +43,7 @@ export const getDetailCityHandler: IHandler = {
   handler: getDetailCity,
   middlewares: [],
   request: {
-    params: ParamsGetDetailCity,
+    params: ParamsIdCity,
   },
   responses: {
     200: {

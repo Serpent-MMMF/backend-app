@@ -40,13 +40,13 @@ export const RespGetCity = BaseResponse.merge(
 ).openapi({ description: "Get city response" });
 export type IRespGetCity = z.infer<typeof RespGetCity>;
 
-export const ParamsGetDetailCity = zoa.object({
+export const ParamsIdCity = zoa.object({
   id: zoa.string().openapi({
     description: "city id",
     example: "1",
   }),
 });
-export type IParamsGetDetailCity = z.infer<typeof ParamsGetDetailCity>;
+export type IParamsIdCity = z.infer<typeof ParamsIdCity>;
 
 export const RespGetDetailCity = BaseResponse.merge(
   zoa
