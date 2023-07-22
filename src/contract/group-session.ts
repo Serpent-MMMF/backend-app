@@ -101,15 +101,13 @@ export const RespGetGroupSession = BaseResponse.merge(
 ).openapi({ description: "Get group session response" });
 export type IRespGetGroupSession = z.infer<typeof RespGetGroupSession>;
 
-export const ParamsGetDetailGroupSession = zoa.object({
+export const ParamsIdGroupSession = zoa.object({
   id: zoa.string().openapi({
     description: "group session ID",
     example: "1",
   }),
 });
-export type IParamsGetDetailGroupSession = z.infer<
-  typeof ParamsGetDetailGroupSession
->;
+export type IParamsIdGroupSession = z.infer<typeof ParamsIdGroupSession>;
 
 export const RespGetDetailGroupSession = BaseResponse.merge(
   zoa

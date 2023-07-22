@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { HttpStatusCode } from "../../constant";
 import {
-  IParamsGetDetailProvince,
+  IParamsIdProvince,
   IRespGetDetailProvince,
-  ParamsGetDetailProvince,
+  ParamsIdProvince,
   RespGetDetailProvince,
   buildErr,
 } from "../../contract";
@@ -13,7 +13,7 @@ import { IHandler } from "../types";
 
 export const getDetailProvince = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params as IParamsGetDetailProvince;
+    const { id } = req.params as IParamsIdProvince;
 
     const province = await provinceUsecase.findById(id);
     if (!province) {
@@ -42,7 +42,7 @@ export const getDetailProvinceHandler: IHandler = {
   handler: getDetailProvince,
   middlewares: [],
   request: {
-    params: ParamsGetDetailProvince,
+    params: ParamsIdProvince,
   },
   responses: {
     200: {

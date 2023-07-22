@@ -28,13 +28,13 @@ export const RespGetProvince = BaseResponse.merge(
 ).openapi({ description: "get province response" });
 export type IRespGetProvince = z.infer<typeof RespGetProvince>;
 
-export const ParamsGetDetailProvince = zoa.object({
+export const ParamsIdProvince = zoa.object({
   id: zoa.string().openapi({
     description: "province id",
     example: "1",
   }),
 });
-export type IParamsGetDetailProvince = z.infer<typeof ParamsGetDetailProvince>;
+export type IParamsIdProvince = z.infer<typeof ParamsIdProvince>;
 
 export const RespGetDetailProvince = BaseResponse.merge(
   zoa

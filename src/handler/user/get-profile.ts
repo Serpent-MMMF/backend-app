@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { HttpStatusCode } from "../../constant";
 import {
+  IParamsIdProfile,
   IRespSelfProfile,
-  ParamsGetProfile,
+  ParamsIdProfile,
   RespGetProfile,
   buildErr,
 } from "../../contract";
@@ -12,17 +13,9 @@ import { IHandler } from "../types";
 
 export const getProfile = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.id;
-    if (!userId) {
-      const response: IRespSelfProfile = {
-        success: false,
-        message: "User id not found",
-        error: "User id not found",
-      };
-      return res.status(HttpStatusCode.BadRequest.code).json(response);
-    }
+    const { id } = req.params as IParamsIdProfile;
 
-    const user = await userUsecase.findById(userId);
+    const user = await userUsecase.findById(id);
     if (!user) {
       const response: IRespSelfProfile = {
         success: false,
@@ -51,7 +44,7 @@ export const getProfileHandler: IHandler = {
   handler: getProfile,
   middlewares: [],
   request: {
-    params: ParamsGetProfile,
+    params: ParamsIdProfile,
   },
   responses: {
     200: {

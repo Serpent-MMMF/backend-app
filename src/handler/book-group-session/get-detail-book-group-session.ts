@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { HttpStatusCode } from "../../constant";
 import {
+  IParamsIdBookGroupSession,
   IRespGetDetailBookGroupSession,
-  ParamsGetDetailBookGroupSession,
+  ParamsIdBookGroupSession,
   RespGetDetailBookGroupSession,
   buildErr,
 } from "../../contract";
@@ -16,7 +17,7 @@ export const getDetailBookGroupSession = async (
   res: Response
 ) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params as IParamsIdBookGroupSession;
 
     const bookGroupSession = await bookGroupSessionUseCase.findById(id);
     if (!bookGroupSession) {
@@ -45,7 +46,7 @@ export const getDetailBookGroupSessionHandler: IHandler = {
   handler: getDetailBookGroupSession,
   middlewares: [authMiddleware],
   request: {
-    params: ParamsGetDetailBookGroupSession,
+    params: ParamsIdBookGroupSession,
   },
   responses: {
     200: {

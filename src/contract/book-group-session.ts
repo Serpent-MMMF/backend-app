@@ -67,14 +67,14 @@ export const RespGetBookGroupSession = BaseResponse.merge(
 ).openapi({ description: "Get book group session response" });
 export type IRespGetBookGroupSession = z.infer<typeof RespGetBookGroupSession>;
 
-export const ParamsGetDetailBookGroupSession = zoa.object({
+export const ParamsIdBookGroupSession = zoa.object({
   id: zoa.string().openapi({
     description: "book group session ID",
     example: "1",
   }),
 });
-export type IParamsGetDetailBookGroupSession = z.infer<
-  typeof ParamsGetDetailBookGroupSession
+export type IParamsIdBookGroupSession = z.infer<
+  typeof ParamsIdBookGroupSession
 >;
 
 export const RespGetDetailBookGroupSession = BaseResponse.merge(
