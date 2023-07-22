@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { HttpStatusCode } from "../../constant";
 import {
+  IQueryGetDiscussion,
   IRespGetDiscussion,
   QueryGetDiscussion,
   RespGetDiscussion,
@@ -12,20 +13,16 @@ import { IHandler } from "../types";
 
 export const getDiscussion = async (req: Request, res: Response) => {
   try {
-    const query = QueryGetDiscussion.safeParse(req.query);
-
-    if (!query.success) {
-      const response: IRespGetDiscussion = {
-        success: false,
-        message: "Invalid request query",
-        error: query.error.message,
-      };
-      return res.status(HttpStatusCode.Forbidden.code).json(response);
-    }
+    const sessionId = req.query.sessionId;
+    const userId = req.query.userId;
+    const query: IQueryGetDiscussion = {
+      sessionId: typeof sessionId === "string" ? sessionId : undefined,
+      userId: typeof userId === "string" ? userId : undefined,
+    };
 
     const discussions = await discussionUseCase.query(
-      query.data.sessionId,
-      query.data.userId
+      query.sessionId,
+      query.userId
     );
 
     const response: IRespGetDiscussion = {

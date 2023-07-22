@@ -86,6 +86,10 @@ export const ENDPOINTS = {
       path: BASE_PATH.GROUP_SESSION + "/:id",
       method: REST_METHOD.GET,
     },
+    GET_DETAIL_GROUP_SESSION_SELF: {
+      path: BASE_PATH.GROUP_SESSION + "/:id/self",
+      method: REST_METHOD.GET,
+    },
   },
   DISCUSSION: {
     CREATE_DISCUSSION: {

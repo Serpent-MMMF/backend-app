@@ -8,7 +8,15 @@ import { IHandler, ITokenContent } from "../types";
 
 export const selfProfile = async (req: Request, res: Response) => {
   try {
-    const tokenContent: ITokenContent = res.locals.tokenContent;
+    const tokenContent: ITokenContent | undefined = res.locals.tokenContent;
+    if (!tokenContent) {
+      const response: IRespSelfProfile = {
+        success: false,
+        message: "Token not found",
+        error: "Token not found",
+      };
+      return res.status(HttpStatusCode.Unauthorized.code).json(response);
+    }
 
     const user = await userUsecase.findById(tokenContent.id);
     if (!user) {

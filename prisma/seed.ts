@@ -1,5 +1,5 @@
 import { CityModel, TagModel, UserModel } from "../src/model";
-import { ApprovalStatus, Role } from "@prisma/client";
+import { ApprovalStatus, Role, SubscriptionStatus } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 import { AuthUsecase, IRegisterParams } from "../src/usecase/auth";
 import { prisma } from "../src/service/db";
@@ -17,6 +17,7 @@ import {
   TagUsecase,
   OneOnOneUsecase,
   DiscussionUseCase,
+  userUsecase,
 } from "../src/usecase/";
 
 const userRepo = new UserRepo(prisma);
@@ -112,7 +113,17 @@ const seedCity = async () => {
   return prisma.city.createMany({ data });
 };
 
-const seedUsers = async (city: CityModel, tags: TagModel[]) => {
+const seedUsers = async (tags: TagModel[]) => {
+  const cities = await prisma.city.findMany();
+  const jakartaCities = cities.filter((c) =>
+    c.name.toLowerCase().includes("jakarta")
+  );
+  const lenCity = cities.length;
+  const lenJakartaCity = jakartaCities.length;
+  if (lenCity === 0 || lenJakartaCity === 0) {
+    throw new Error("city not found");
+  }
+
   const mentee: IRegisterParams = {
     name: faker.person.fullName(),
     description: faker.lorem.paragraphs({
@@ -122,7 +133,7 @@ const seedUsers = async (city: CityModel, tags: TagModel[]) => {
     role: Role.MENTEE,
     email: "mentee@gmail.com",
     password: "password",
-    cityId: city.id,
+    cityId: jakartaCities[0].id,
     tagIds: tags
       .filter((_) => Math.random() > 0.5)
       .map((e) => e.id)
@@ -137,18 +148,23 @@ const seedUsers = async (city: CityModel, tags: TagModel[]) => {
     role: Role.MENTOR,
     email: "mentor@gmail.com",
     password: "password",
-    cityId: city.id,
+    cityId: jakartaCities[0].id,
     tagIds: tags
       .filter((_) => Math.random() > 0.5)
       .map((e) => e.id)
       .join(","),
   };
 
-  const users = Array(100)
+  const users = Array(20)
     .fill({})
     .map((_, idx) => {
       const role = Math.random() > 0.5 ? Role.MENTOR : Role.MENTEE;
       const email = role.toLowerCase() + idx + "@gmail.com";
+
+      const city =
+        Math.random() > 0.5
+          ? jakartaCities[Math.floor(Math.random() * lenJakartaCity)]
+          : cities[Math.floor(Math.random() * lenCity)];
 
       return {
         name: faker.person.fullName(),
@@ -167,11 +183,28 @@ const seedUsers = async (city: CityModel, tags: TagModel[]) => {
       };
     });
 
-  return await Promise.all([
+  const createdUsers = await Promise.all([
     authUsecase.register(mentee),
     authUsecase.register(mentor),
     ...users.map((u) => authUsecase.register(u)),
   ]);
+
+  await Promise.all(
+    createdUsers
+      .filter((u) => u.role === Role.MENTOR)
+      .filter(_ => Math.random() < 0.3)
+      .map((u) => {
+        return prisma.user.update({
+          data: {
+            ...u,
+            subscriptionStatus: SubscriptionStatus.PREMIUM,
+          },
+          where: {
+            id: u.id,
+          },
+        });
+      })
+  );
 };
 
 const seedGroupSession = async () => {
@@ -183,10 +216,13 @@ const seedGroupSession = async () => {
     mentors
       .filter((_) => Math.random() > 0.5)
       .map(async (user) => {
+        const date = new Date();
+        date.setDate(date.getDate() + 3);
+
         return prisma.groupSession.create({
           data: {
-            name: "Group Session " + faker.company.name,
-            date: Math.random() > 0.5 ? faker.date.past() : faker.date.future(),
+            name: "Group Session " + faker.company.name(),
+            date,
             meetingUrl: genUrl(),
             mentorId: user.id,
             description: faker.lorem.paragraphs(2),
@@ -247,9 +283,8 @@ const seedOneOnOne = async () => {
       .fill({})
       .map((_, idx) => {
         const mentor = mentors[idx];
-        const mentee = mentors[idx];
+        const mentee = mentees[idx];
 
-        // return
         return oneOnOneUsecase.create(
           {
             mentorId: mentor.id,
@@ -287,7 +322,7 @@ const seedOneOnOne = async () => {
         return oneOnOneUsecase.update({
           ...o,
           review: faker.lorem.paragraph(),
-          rating: Math.floor(Math.random() * 5) + 2,
+          rating: Math.floor(Math.random() * 4) + 2,
         });
       })
   );
@@ -318,13 +353,8 @@ const main = async () => {
     console.log("seeding tag");
     const tags = await seedTag();
 
-    const city = await prisma.city.findFirst();
-    if (!city) {
-      throw new Error("City not found");
-    }
-
     console.log("seeding users");
-    const users = await seedUsers(city, tags);
+    const users = await seedUsers(tags);
 
     console.log("seeding group session");
     const groupSession = await seedGroupSession();

@@ -65,15 +65,21 @@ export class GroupSessionRepo implements IGroupSessionRepo {
     limitEndDateTime?: Date,
     params?: AllOptional<GroupSessionModel>
   ) {
+    const date: {
+      gte?: Date;
+      lte?: Date;
+    } = {};
+    if (limitStartDateTime) {
+      date.gte = limitStartDateTime;
+    }
+    if (limitEndDateTime) {
+      date.lte = limitEndDateTime;
+    }
+
     return this.prisma.groupSession.findMany({
       where: {
-        date: {
-          gte: limitStartDateTime
-            ? limitStartDateTime
-            : new Date("2023-01-01T00:00:00.000Z"),
-          lte: limitEndDateTime ? limitEndDateTime : new Date(),
-        },
         ...params,
+        date,
       },
     });
   }

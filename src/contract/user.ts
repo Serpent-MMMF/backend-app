@@ -4,6 +4,15 @@ import { zoa } from "../util";
 import { BaseResponse } from "./base";
 
 export const UserDTO = zoa.object({
+  id: zoa.string().openapi({ description: "User ID", example: "1" }),
+  createdAt: zoa.coerce.date().openapi({
+    description: "user's created at",
+    example: "2021-08-01T00:00:00.000Z",
+  }),
+  updatedAt: zoa.coerce.date().openapi({
+    description: "user's updated at",
+    example: "2021-08-01T00:00:00.000Z",
+  }),
   name: zoa.string().openapi({
     description: "user's name",
     example: "malik akbar",
