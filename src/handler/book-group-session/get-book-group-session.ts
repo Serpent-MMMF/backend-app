@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { HttpStatusCode } from "../../constant";
 import {
+  IQueryGetBookGroupSession,
   IRespGetBookGroupSession,
   QueryGetBookGroupSession,
   RespGetBookGroupSession,
@@ -13,20 +14,16 @@ import { IHandler } from "../types";
 
 export const getBookGroupSession = async (req: Request, res: Response) => {
   try {
-    const reqQuery = QueryGetBookGroupSession.safeParse(req.query);
-
-    if (!reqQuery.success) {
-      const response: IRespGetBookGroupSession = {
-        success: false,
-        message: "Invalid request query",
-        error: reqQuery.error.message,
-      };
-      return res.status(HttpStatusCode.Forbidden.code).json(response);
-    }
+    const sessionId = req.query.sessionId;
+    const menteeId = req.query.menteeId;
+    const query: IQueryGetBookGroupSession = {
+      sessionId: typeof sessionId === "string" ? sessionId : undefined,
+      menteeId: typeof menteeId === "string" ? menteeId : undefined,
+    };
 
     const bookGroupSessions = await bookGroupSessionUseCase.query(
-      reqQuery.data.menteeId,
-      reqQuery.data.sessionId
+      query.menteeId,
+      query.sessionId
     );
 
     const response: IRespGetBookGroupSession = {
