@@ -132,7 +132,7 @@ model OneOnOne {
   mentorId       String
   meetingUrl     String?
   review         String?
-  rating         Int?
+  rating         Float?
   message        String
   approvalStatus ApprovalStatus
   date           DateTime
