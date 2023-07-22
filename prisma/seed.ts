@@ -216,10 +216,13 @@ const seedGroupSession = async () => {
     mentors
       .filter((_) => Math.random() > 0.5)
       .map(async (user) => {
+        const date = new Date();
+        date.setDate(date.getDate() + 3);
+
         return prisma.groupSession.create({
           data: {
             name: "Group Session " + faker.company.name(),
-            date: Math.random() > 0.5 ? faker.date.past() : faker.date.future(),
+            date,
             meetingUrl: genUrl(),
             mentorId: user.id,
             description: faker.lorem.paragraphs(2),
