@@ -121,3 +121,30 @@ export const RespGetDetailGroupSession = BaseResponse.merge(
 export type IRespGetDetailGroupSession = z.infer<
   typeof RespGetDetailGroupSession
 >;
+
+export const DataGroupSessionDetailSelf = zoa.object({
+  groupSession: GroupSessionDTO.openapi({
+    description: "group session data",
+  }),
+  meta: zoa.object({
+    isJoined: zoa.boolean().openapi({
+      description: "is joined",
+      example: true,
+    }),
+    canJoin: zoa.boolean().openapi({
+      description: "can join",
+      example: true,
+    }),
+    isOwner: zoa.boolean().openapi({
+      description: "is owner",
+      example: true,
+    }),
+  })
+})
+export type IDataGroupSessionDetailSelf = z.infer<typeof DataGroupSessionDetailSelf>;
+export const RespGroupSessionDetailSelf = BaseResponse.merge(
+  zoa.object({
+    data: DataGroupSessionDetailSelf.optional(),
+  })
+);
+export type IRespGroupSessionDetailSelf = z.infer<typeof RespGroupSessionDetailSelf>;
