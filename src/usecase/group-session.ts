@@ -78,7 +78,9 @@ export class GroupSessionUseCase implements IGroupSessionUseCase {
       throw new Error("User not found");
     }
 
-    const bookGroupSessions = await this.bgsRepo.findMany(userId);
+    const bookGroupSessions = await this.bgsRepo.findMany({
+      menteeId: userId,
+    });
 
     const isJoined = !!bookGroupSessions.find((b) => b.sessionId === id);
 
