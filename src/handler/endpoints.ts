@@ -11,7 +11,24 @@ export const ENDPOINTS = {
       method: REST_METHOD.POST,
     },
   },
-  USER: {},
+  USER: {
+    SEARCH_USER: {
+      path: BASE_PATH.USER,
+      method: REST_METHOD.GET,
+    },
+    GET_PROFILE: {
+      path: BASE_PATH.USER + "/:id",
+      method: REST_METHOD.GET,
+    },
+    UPDATE_PROFILE: {
+      path: BASE_PATH.USER + "/self",
+      method: REST_METHOD.PUT,
+    },
+    MY_PROFILE: {
+      path: BASE_PATH.USER + "/self",
+      method: REST_METHOD.GET,
+    },
+  },
   TAG: {
     GET_TAG: {
       path: BASE_PATH.TAG,

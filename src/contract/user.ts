@@ -1,6 +1,7 @@
 import { Role, SubscriptionStatus } from "@prisma/client";
-import { zoa } from "../util";
 import { z } from "zod";
+import { zoa } from "../util";
+import { BaseResponse } from "./base";
 
 export const UserDTO = zoa.object({
   name: zoa.string().openapi({
@@ -35,3 +36,95 @@ export const UserDTO = zoa.object({
     }),
 });
 export type IUserDTO = z.infer<typeof UserDTO>;
+
+export const QuerySearchUser = zoa.object({
+  role: zoa.enum([Role.MENTOR, Role.MENTEE]).optional().openapi({
+    description: "user's role",
+    example: Role.MENTOR,
+  }),
+  tagIds: zoa.string().optional().openapi({
+    description: "comma separated values",
+    example: "1,2,3",
+  }),
+  onMyCity: zoa.boolean().optional().openapi({
+    description: "user on my city",
+    example: true,
+  }),
+  onMyProvince: zoa.boolean().optional().openapi({
+    description: "user on my province",
+    example: true,
+  }),
+  premiumOnly: zoa.boolean().optional().openapi({
+    description: "user premium only",
+    example: true,
+  }),
+});
+export type IQuerySearchUser = z.infer<typeof QuerySearchUser>;
+
+export const RespSearchUserData = zoa.array(UserDTO).openapi({
+  description: "Search user response data",
+});
+
+export const RespSearchUser = BaseResponse.merge(
+  zoa
+    .object({
+      data: RespSearchUserData.optional(),
+    })
+    .openapi({ description: "Search user response data" })
+).openapi({ description: "Search user response" });
+export type IRespSearchUser = z.infer<typeof RespSearchUser>;
+
+export const RespSelfProfile = BaseResponse.merge(
+  zoa
+    .object({
+      data: UserDTO.optional(),
+    })
+    .openapi({ description: "Profile response data" })
+).openapi({ description: "Profile response" });
+export type IRespSelfProfile = z.infer<typeof RespSelfProfile>;
+
+export const RespGetProfile = BaseResponse.merge(
+  zoa
+    .object({
+      data: UserDTO.optional(),
+    })
+    .openapi({ description: "Profile response data" })
+).openapi({ description: "Profile response" });
+export type IRespGetProfile = z.infer<typeof RespGetProfile>;
+
+export const ReqUpdateProfile = zoa.object({
+  name: zoa.string().openapi({
+    description: "user's name",
+    example: "John Doe",
+  }),
+  description: zoa.string().openapi({
+    description: "user's description",
+    example: "I am a mentor",
+  }),
+  subscriptionStatus: zoa.string().openapi({
+    description: "user's subscription status",
+    example: "FREE",
+  }),
+  imageUrl: zoa.string().openapi({
+    description: "user's image url",
+    example: "https://i.imgur.com/123.jpg",
+  }),
+  cityId: zoa.string().openapi({
+    description: "user's city id",
+    example: "1101",
+  }),
+  tagIds: zoa.string().openapi({
+    description: "comma separated values",
+    example: "1,2,3",
+  }),
+});
+export type IReqUpdateProfile = z.infer<typeof ReqUpdateProfile>;
+
+export const RespUpdateProfile = BaseResponse.merge(
+  zoa
+    .object({
+      data: UserDTO.optional(),
+    })
+    .openapi({ description: "Update profile response data" })
+).openapi({ description: "Update profile response" });
+export type IRespUpdateProfile = z.infer<typeof RespUpdateProfile>;

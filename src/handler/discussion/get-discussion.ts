@@ -6,7 +6,7 @@ import {
   RespGetDiscussion,
   buildErr,
 } from "../../contract";
-import { discussionUseCase } from "../../usecase/discussion";
+import { discussionUseCase } from "../../usecase/";
 import { ENDPOINTS } from "../endpoints";
 import { IHandler } from "../types";
 

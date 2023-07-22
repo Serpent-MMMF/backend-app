@@ -8,7 +8,7 @@ import {
 } from "../../contract";
 import { authMiddleware } from "../../middleware/auth";
 import { menteeCheckMiddleware } from "../../middleware/mentee-check";
-import { bookGroupSessionUseCase } from "../../usecase/book-group-session";
+import { bookGroupSessionUseCase } from "../../usecase";
 import { ENDPOINTS } from "../endpoints";
 import { IHandler } from "../types";
 

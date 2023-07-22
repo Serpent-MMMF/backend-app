@@ -6,7 +6,7 @@ import {
   RespGetGroupSession,
   buildErr,
 } from "../../contract";
-import { groupSessionUseCase } from "../../usecase/group-session";
+import { groupSessionUseCase } from "../../usecase/";
 import { ENDPOINTS } from "../endpoints";
 import { IHandler } from "../types";
 

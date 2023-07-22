@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { HttpStatusCode } from "../../constant";
 import { IRespGetProvince, RespGetProvince, buildErr } from "../../contract";
-import { provinceUsecase } from "../../usecase/province";
+import { provinceUsecase } from "../../usecase/";
 import { ENDPOINTS } from "../endpoints";
 import { IHandler } from "../types";
 

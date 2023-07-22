@@ -7,7 +7,7 @@ import {
   buildErr,
 } from "../../contract";
 import { authMiddleware } from "../../middleware/auth";
-import { bookGroupSessionUseCase } from "../../usecase/book-group-session";
+import { bookGroupSessionUseCase } from "../../usecase/";
 import { ENDPOINTS } from "../endpoints";
 import { IHandler } from "../types";
 

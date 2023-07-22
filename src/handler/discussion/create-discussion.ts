@@ -7,7 +7,7 @@ import {
   buildErr,
 } from "../../contract";
 import { authMiddleware } from "../../middleware/auth";
-import { discussionUseCase } from "../../usecase/discussion";
+import { discussionUseCase } from "../../usecase/";
 import { ENDPOINTS } from "../endpoints";
 import { IHandler } from "../types";
 

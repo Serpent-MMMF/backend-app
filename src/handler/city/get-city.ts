@@ -7,7 +7,7 @@ import {
   RespGetCity,
   buildErr,
 } from "../../contract";
-import { cityUsecase } from "../../usecase/city";
+import { cityUsecase } from "../../usecase/";
 import { ENDPOINTS } from "../endpoints";
 import { IHandler } from "../types";
 
