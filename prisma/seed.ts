@@ -1,15 +1,32 @@
 import { CityModel, TagModel, UserModel } from "../src/model";
-import { Role } from "@prisma/client";
+import { ApprovalStatus, Role } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 import { AuthUsecase, IRegisterParams } from "../src/usecase/auth";
 import { prisma } from "../src/service/db";
 import fs from "fs";
-import { TagRepo, UserRepo, UserTagRepo } from "../src/repo";
-import { TagUsecase } from "../src/usecase/tag";
+import {
+  DiscussionRepo,
+  OneOnOneRepo,
+  TagRepo,
+  UserRepo,
+  UserTagRepo,
+  GroupSessionRepo,
+  BookGroupSessionRepo,
+} from "../src/repo";
+import {
+  TagUsecase,
+  OneOnOneUsecase,
+  DiscussionUseCase,
+} from "../src/usecase/";
 
 const userRepo = new UserRepo(prisma);
 const tagRepo = new TagRepo(prisma);
 const userTagRepo = new UserTagRepo(prisma);
+const oneOnOneRepo = new OneOnOneRepo(prisma);
+const discussionRepo = new DiscussionRepo(prisma);
+const groupSessionRepo = new GroupSessionRepo(prisma);
+const bookGroupSessionRepo = new BookGroupSessionRepo(prisma);
+
 const tagUsecase = new TagUsecase({
   tagRepository: tagRepo,
   userTagRepository: userTagRepo,
@@ -18,6 +35,18 @@ const authUsecase = new AuthUsecase({
   userRepo,
   tagUsecase,
 });
+const discussionUsecase = new DiscussionUseCase({
+  discussionRepository: discussionRepo,
+  groupSessionRepository: groupSessionRepo,
+  bookGroupSessionRepository: bookGroupSessionRepo,
+});
+const oneOnOneUsecase = new OneOnOneUsecase({
+  oneOnOneRepository: oneOnOneRepo,
+});
+
+const genUrl = () => {
+  return "bit.ly/" + faker.commerce.productName().split(" ")[0];
+};
 
 const TAGS = [
   "Software Engineering",
@@ -141,8 +170,129 @@ const seedUsers = async (city: CityModel, tags: TagModel[]) => {
   return await Promise.all([
     authUsecase.register(mentee),
     authUsecase.register(mentor),
-    ...users.map(authUsecase.register),
+    ...users.map((u) => authUsecase.register(u)),
   ]);
+};
+
+const seedGroupSession = async () => {
+  const users = await prisma.user.findMany();
+  const mentors = users.filter((u) => u.role === Role.MENTOR);
+  const mentees = users.filter((u) => u.role === Role.MENTEE);
+
+  const groupSessions = await Promise.all(
+    mentors
+      .filter((_) => Math.random() > 0.5)
+      .map(async (user) => {
+        return prisma.groupSession.create({
+          data: {
+            name: "Group Session " + faker.company.name,
+            date: Math.random() > 0.5 ? faker.date.past() : faker.date.future(),
+            meetingUrl: genUrl(),
+            mentorId: user.id,
+            description: faker.lorem.paragraphs(2),
+            maxParticipant: Math.floor(Math.random() * 30) + 70,
+          },
+        });
+      })
+  );
+
+  const groupSession = await Promise.all(
+    groupSessions.map(async (g) => {
+      const books = await Promise.all(
+        mentees
+          .filter((_) => Math.random() > 0.5)
+          .map((mentee) => {
+            return prisma.bookGroupSession.create({
+              data: {
+                menteeId: mentee.id,
+                sessionId: g.id,
+              },
+            });
+          })
+      );
+
+      return {
+        ...g,
+        books,
+      };
+    })
+  );
+
+  return await Promise.all(
+    groupSession.map(async (g) => {
+      return await Promise.all(
+        g.books.map(async (b) => {
+          return prisma.discussion.create({
+            data: {
+              userId: b.menteeId,
+              sessionId: g.id,
+              content: faker.lorem.paragraph(),
+            },
+          });
+        })
+      );
+    })
+  );
+};
+
+const seedOneOnOne = async () => {
+  const users = await prisma.user.findMany();
+  const mentors = users.filter((u) => u.role === Role.MENTOR);
+  const mentees = users.filter((u) => u.role === Role.MENTEE);
+
+  const n = mentors.length > mentees.length ? mentees.length : mentors.length;
+
+  const oneOnOnes = await Promise.all(
+    Array(n)
+      .fill({})
+      .map((_, idx) => {
+        const mentor = mentors[idx];
+        const mentee = mentors[idx];
+
+        // return
+        return oneOnOneUsecase.create(
+          {
+            mentorId: mentor.id,
+            date: Math.random() > 0.5 ? faker.date.past() : faker.date.future(),
+            message: faker.lorem.paragraph(),
+          },
+          mentee.id
+        );
+      })
+  );
+
+  const respondedOneOnOnes = await Promise.all(
+    oneOnOnes.map(async (o) => {
+      const flag = Math.random() > 0.7 ? false : true;
+      if (!flag) {
+        return oneOnOneUsecase.reject(o.id, o.mentorId);
+      }
+
+      return oneOnOneUsecase.approve(
+        {
+          meetingUrl: genUrl(),
+        },
+        o.id,
+        o.mentorId
+      );
+    })
+  );
+
+  await Promise.all(
+    respondedOneOnOnes
+      .filter((o) => {
+        return o.approvalStatus === ApprovalStatus.APPROVED;
+      })
+      .map(async (o) => {
+        return oneOnOneUsecase.update({
+          ...o,
+          review: faker.lorem.paragraph(),
+          rating: Math.floor(Math.random() * 5) + 2,
+        });
+      })
+  );
+
+  return prisma.oneOnOne.findMany();
 };
 
 const seedTag = async () => {
@@ -175,6 +325,12 @@ const main = async () => {
 
     console.log("seeding users");
     const users = await seedUsers(city, tags);
+
+    console.log("seeding group session");
+    const groupSession = await seedGroupSession();
+
+    console.log("seeding one on one");
+    const oneOnOnes = await seedOneOnOne();
 
     console.log("finish seeding");
   } catch (err) {
