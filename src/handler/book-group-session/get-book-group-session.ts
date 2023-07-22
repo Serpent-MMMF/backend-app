@@ -42,7 +42,7 @@ export const getBookGroupSessionHandler: IHandler = {
   path: ENDPOINTS.BOOK_GROUP_SESSION.GET_BOOK_GROUP_SESSION.path,
   method: ENDPOINTS.BOOK_GROUP_SESSION.GET_BOOK_GROUP_SESSION.method,
   handler: getBookGroupSession,
-  middlewares: [authMiddleware],
+  middlewares: [],
   request: {
     query: QueryGetBookGroupSession,
   },
