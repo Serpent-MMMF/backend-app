@@ -194,7 +194,7 @@ const seedUsers = async (tags: TagModel[]) => {
       return prisma.user.update({
         data: {
           ...u,
-          imageUrl: "/images/person-" + Math.floor(Math.random() * 10) + ".png",
+          imageUrl: "/images/person-" + (Math.floor(Math.random() * 10) + 1) + ".png",
         },
         where: {
           id: u.id,
