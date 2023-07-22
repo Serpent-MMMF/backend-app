@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { HttpStatusCode } from "../../constant";
 import {
+  IQueryGetGroupSession,
   IRespGetGroupSession,
   QueryGetGroupSession,
   RespGetGroupSession,
@@ -12,18 +13,16 @@ import { IHandler } from "../types";
 
 export const getGroupSession = async (req: Request, res: Response) => {
   try {
-    const reqQuery = QueryGetGroupSession.safeParse(req.query);
+    const mentorId = req.query.mentorId;
+    const limitStartDateTime = req.query.limitStartDateTime;
+    const limitEndDateTime = req.query.limitEndDateTime;
+    const reqQuery: IQueryGetGroupSession = {
+      mentorId: typeof mentorId === "string" ? mentorId : undefined,
+      limitStartDateTime: typeof limitStartDateTime === "string" ? new Date(limitStartDateTime) : undefined,
+      limitEndDateTime: typeof limitEndDateTime === "string" ? new Date(limitEndDateTime) : undefined,
+    };
 
-    if (!reqQuery.success) {
-      const response: IRespGetGroupSession = {
-        success: false,
-        message: "Invalid request query",
-        error: reqQuery.error.message,
-      };
-      return res.status(HttpStatusCode.Forbidden.code).json(response);
-    }
-
-    const groupSessions = await groupSessionUseCase.query(reqQuery.data);
+    const groupSessions = await groupSessionUseCase.query(reqQuery);
 
     const response: IRespGetGroupSession = {
       success: true,
