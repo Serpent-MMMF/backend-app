@@ -41,7 +41,7 @@ export const getOneOnOneHandler: IHandler = {
   path: ENDPOINTS.ONE_ON_ONE.GET_ONE_ON_ONE.path,
   method: ENDPOINTS.ONE_ON_ONE.GET_ONE_ON_ONE.method,
   handler: getOneOnOne,
-  middlewares: [authMiddleware],
+  middlewares: [],
   request: {
     query: QueryGetOneOnOne,
   },
