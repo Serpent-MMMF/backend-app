@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { HttpStatusCode } from "../../constant";
-import { buildErr } from "../../contract/base";
 import {
   IRespCreateGroupSession,
   ReqCreateGroupSession,
   RespCreateGroupSession,
-} from "../../contract/group-session";
+  buildErr,
+} from "../../contract";
 import { authMiddleware, mentorCheckMiddleware } from "../../middleware";
 import { groupSessionUseCase } from "../../usecase/group-session";
 import { ENDPOINTS } from "../endpoints";

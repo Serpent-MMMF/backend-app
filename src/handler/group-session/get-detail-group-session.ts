@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { HttpStatusCode } from "../../constant";
-import { buildErr } from "../../contract/base";
 import {
   IParamsGetDetailGroupSession,
   IRespCreateGroupSession,
   ParamsGetDetailGroupSession,
   RespGetDetailGroupSession,
-} from "../../contract/group-session";
+  buildErr,
+} from "../../contract";
 import { groupSessionUseCase } from "../../usecase/group-session";
 import { ENDPOINTS } from "../endpoints";
 import { IHandler } from "../types";

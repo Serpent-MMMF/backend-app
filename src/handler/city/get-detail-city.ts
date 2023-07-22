@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { HttpStatusCode } from "../../constant";
-import { buildErr } from "../../contract";
 import {
   IParamsGetDetailCity,
   IRespGetDetailCity,
   ParamsGetDetailCity,
   RespGetDetailCity,
-} from "../../contract/city";
+  buildErr,
+} from "../../contract";
 import { cityUsecase } from "../../usecase/city";
 import { ENDPOINTS } from "../endpoints";
 import { IHandler } from "../types";
